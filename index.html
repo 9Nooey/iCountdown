@@ -13,214 +13,129 @@
             --glass-border: rgba(255, 255, 255, 0.25);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Prompt', sans-serif; background: var(--bg-gradient); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: var(--primary-color); position: relative; }
 
-        body {
-            font-family: 'Prompt', sans-serif;
-            background: var(--bg-gradient);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            color: var(--primary-color);
-            position: relative;
-        }
-
-        /* --- Background Effects --- */
-        .bg-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        
-        /* Layer 1: Moving Squares */
+        /* Background Moving Squares */
+        .bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
         .circles { z-index: 1; }
-        .circles li {
-            position: absolute;
-            display: block;
-            list-style: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            animation: animateCircles 25s linear infinite;
-            bottom: -150px;
-            border-radius: 10%;
-        }
+        .circles li { position: absolute; display: block; list-style: none; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.15); animation: animateCircles 25s linear infinite; bottom: -150px; border-radius: 10%; }
         .circles li:nth-child(1) { left: 15%; width: 80px; height: 80px; animation-delay: 0s; }
         .circles li:nth-child(2) { left: 35%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
         .circles li:nth-child(3) { left: 55%; width: 20px; height: 20px; animation-delay: 4s; }
         .circles li:nth-child(4) { left: 75%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
         .circles li:nth-child(5) { left: 85%; width: 20px; height: 20px; animation-delay: 0s; }
-        
+        @keyframes animateCircles { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; } }
 
-        @keyframes animateCircles {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
-        }
-
-        /* =========================================
-           แก้ไขตำแหน่งลูกโป่ง (ให้อยู่บนหัวกรอบ)
-        ========================================= */
-        .balloons { 
-            /* ไม่ใช้ position absolute เทียบกับจอแล้ว แต่จะเทียบกับ container */
-            position: absolute; 
-            top: -110px; /* ดันขึ้นไปอยู่เหนือกล่อง */
-            left: 0;
-            width: 100%; 
-            display: flex;
-            justify-content: center;
-            gap: 15px; 
-            z-index: 20; /* ให้อยู่เหนือทุกอย่าง */
-            pointer-events: none; /* เพื่อไม่ให้บังปุ่ม Setting */
-        }
-
-        .balloon {
-            position: relative;
-            width: 50px;
-            height: 65px;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            opacity: 0.95;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
-        }
-
-        .balloon::before {
-            content: '';
-            position: absolute;
-            bottom: -45px;
-            left: 50%;
-            width: 2px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.6);
-            transform: translateX(-50%);
-        }
-
-        .b1 { background-color: rgba(255, 99, 132, 0.9); animation: floatWave 4s ease-in-out infinite; animation-delay: 0s; }
-        .b2 { background-color: rgba(54, 162, 235, 0.9); animation: floatWave 4.5s ease-in-out infinite; animation-delay: 1s; }
-        .b3 { background-color: rgba(255, 206, 86, 0.9); animation: floatWave 5s ease-in-out infinite; animation-delay: 2s; }
-        .b4 { background-color: rgba(75, 192, 192, 0.9); animation: floatWave 4.2s ease-in-out infinite; animation-delay: 0.5s; }
-        .b5 { background-color: rgba(153, 102, 255, 0.9); animation: floatWave 4.8s ease-in-out infinite; animation-delay: 1.5s; }
-
-        @keyframes floatWave {
-            0%, 100% { transform: translateY(0) rotate(-4deg); }
-            50% { transform: translateY(-15px) rotate(4deg); }
-        }
-        /* ========================================= */
-
-        /* --- Main Content --- */
+        /* --- Main Content Container --- */
         .container {
             z-index: 10;
             text-align: center;
             background: var(--glass-bg);
-            padding: 2rem 1.5rem;
+            padding: 2.5rem 1.5rem 2rem 1.5rem; /* เพิ่ม padding บน */
             border-radius: 25px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            width: 95%; 
-            max-width: 600px;
-            position: relative; /* สำคัญมาก เพื่อให้ลูกโป่งเกาะกับกล่องนี้ */
+            width: 95%; max-width: 600px;
+            position: relative; /* ให้ลูกโป่งเกาะกับกล่องนี้ */
             animation: fadeInDown 0.8s ease-out;
-            margin-top: 50px; /* เพิ่มพื้นที่ด้านบนให้ลูกโป่งไม่ชนขอบจอ */
+            margin-top: 40px; /* เว้นที่ด้านบนให้ลูกโป่งลอย */
         }
+
+        /* ====================================================
+           🎈 ส่วนลูกโป่ง (จัดวางให้อยู่บนหัวกรอบ)
+        ==================================================== */
+        .balloons-container {
+            position: absolute;
+            top: -95px; /* ดันขึ้นไปเหนือกล่อง */
+            left: 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center; /* จัดกึ่งกลาง */
+            align-items: flex-end;
+            gap: 15px; /* ระยะห่างระหว่างลูกโป่ง */
+            pointer-events: none; /* เพื่อให้กดทะลุไปโดนปุ่มได้ */
+            z-index: 20;
+        }
+
+        .balloon {
+            position: relative;
+            width: 45px;
+            height: 60px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            opacity: 0.95;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* เชือก */
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            width: 2px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateX(-50%);
+        }
+
+        /* สีและ Animation */
+        .b1 { background-color: rgba(255, 99, 132, 0.9); animation: floatHead 4s ease-in-out infinite; }
+        .b2 { background-color: rgba(54, 162, 235, 0.9); animation: floatHead 4.5s ease-in-out infinite; animation-delay: 1s; }
+        .b3 { background-color: rgba(255, 206, 86, 0.9); animation: floatHead 5s ease-in-out infinite; animation-delay: 2s; }
+        .b4 { background-color: rgba(75, 192, 192, 0.9); animation: floatHead 4.2s ease-in-out infinite; animation-delay: 0.5s; }
+        .b5 { background-color: rgba(153, 102, 255, 0.9); animation: floatHead 4.8s ease-in-out infinite; animation-delay: 1.5s; }
+
+        @keyframes floatHead {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+        /* ==================================================== */
 
         h1 {
             font-size: calc(1.5rem + 1vw);
             margin-bottom: 1.5rem;
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
             font-weight: 700;
-            letter-spacing: 0.5px;
             word-wrap: break-word;
+            min-height: 40px;
         }
 
-        .countdown-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-
-        .time-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 8px 2px;
-            border-radius: 12px;
-        }
-
-        .number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1.1;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            opacity: 0.85;
-            margin-top: 5px;
-            font-weight: 500;
-        }
+        .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .time-box { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.25); padding: 8px 2px; border-radius: 12px; }
+        .number { font-size: 2.5rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .label { font-size: 0.8rem; text-transform: uppercase; opacity: 0.85; margin-top: 5px; font-weight: 500; }
 
         @media (max-width: 600px) {
             .number { font-size: 1.5rem; }
             .label { font-size: 0.6rem; }
             .countdown-grid { gap: 5px; }
-            .balloons { gap: 10px; } 
         }
 
-        /* --- Settings Panel --- */
+        /* ปุ่ม Settings */
         .settings-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.1);
+            top: 15px; right: 15px;
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
             width: 35px; height: 35px;
             border: 1px solid var(--glass-border);
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 30; /* ให้สูงกว่าลูกโป่ง */
+            color: #fff; font-size: 1.2rem; cursor: pointer;
+            z-index: 50; /* สูงสุดเพื่อให้กดติดเสมอ */
             display: flex; align-items: center; justify-content: center;
         }
-        
-        .settings-panel {
-            display: none;
-            margin-top: 20px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 15px;
-            text-align: left;
-        }
+        .settings-btn:hover { background: rgba(255,255,255,0.4); }
+
+        .settings-panel { display: none; margin-top: 20px; background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 15px; text-align: left; }
         .settings-panel.active { display: block; animation: fadeIn 0.3s ease-in; }
-        
         .input-group { margin-bottom: 12px; }
         .input-label { display: block; margin-bottom: 5px; font-size: 0.8rem; opacity: 0.9; }
-        .input-field {
-            width: 100%; padding: 10px; border-radius: 8px; border: none;
-            font-family: 'Prompt', sans-serif; background: rgba(255, 255, 255, 0.95);
-            color: #333; font-size: 0.9rem;
-        }
-        .save-btn {
-            background: #fff; color: #667eea; border: none; padding: 10px;
-            border-radius: 20px; font-weight: bold; cursor: pointer; width: 100%;
-            font-size: 1rem;
-        }
-
+        .input-field { width: 100%; padding: 10px; border-radius: 8px; border: none; font-family: 'Prompt', sans-serif; background: rgba(255, 255, 255, 0.95); color: #333; font-size: 0.9rem; }
+        .save-btn { background: #fff; color: #667eea; border: none; padding: 10px; border-radius: 20px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; }
+        
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -233,7 +148,7 @@
     </ul>
 
     <div class="container">
-        <div class="balloons">
+        <div class="balloons-container">
             <div class="balloon b1"></div>
             <div class="balloon b2"></div>
             <div class="balloon b3"></div>
@@ -250,22 +165,18 @@
                 <label class="input-label">🔒 Password</label>
                 <input type="password" id="adminPass" class="input-field" placeholder="Password">
             </div>
-            
             <div class="input-group">
                 <label class="input-label">📝 ชื่อทริป</label>
                 <input type="text" id="titleInput" class="input-field">
             </div>
-            
             <div class="input-group">
                 <label class="input-label">📅 วันและเวลาสิ้นสุด</label>
                 <input type="datetime-local" id="datePicker" class="input-field">
             </div>
-
             <div class="input-group">
                  <label class="input-label">🎉 ข้อความจบ</label>
                 <input type="text" id="endMsgInput" class="input-field">
             </div>
-            
             <button class="save-btn" onclick="saveToCloud()">บันทึกข้อมูลออนไลน์ ☁️</button>
             <p id="statusMsg" style="font-size: 0.85rem; margin-top: 10px; color: #ffd700; min-height: 1.2em;"></p>
         </div>
@@ -282,6 +193,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
+        // CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyCIjYBKVd15HVUS25lPKRrb507UY75_vCc",
           authDomain: "icountdown.firebaseapp.com",
@@ -292,8 +204,137 @@
           appId: "1:108107979488:web:38c7b432538cde9d568e85"
         };
 
+        // Initialize with Error Handling
         try {
-            firebase.initializeApp(firebaseConfig);
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
             var db = firebase.database();
         } catch(e) {
-            document.getElementById('headline').
+            alert("Connection Error: " + e.message + "\nกรุณาเช็ค Config Firebase");
+            document.getElementById('headline').innerText = "Config Error!";
+        }
+
+        let targetDate;
+        let timer;
+        let endMessageStr = "Enjoy !!";
+
+        // ตรวจสอบการเชื่อมต่อ
+        if(db) {
+            const connectedRef = db.ref(".info/connected");
+            connectedRef.on("value", (snap) => {
+                if (snap.val() === true) {
+                    // console.log("connected");
+                } else {
+                    // ถ้าต่อไม่ติด อาจจะเป็นที่เน็ต หรือ Rules
+                    // document.getElementById('headline').innerText = "Connecting...";
+                }
+            });
+
+            // ดึงข้อมูล
+            db.ref('tripData').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    targetDate = data.timestamp;
+                    endMessageStr = data.endMessage || endMessageStr;
+                    document.getElementById('headline').innerText = data.title;
+                    
+                    document.getElementById('titleInput').value = data.title;
+                    document.getElementById('endMsgInput').value = endMessageStr;
+
+                    startTimer();
+                } else {
+                    document.getElementById('headline').innerText = "กด ⚙️ เพื่อตั้งค่า";
+                }
+            }, (error) => {
+                // ถ้าขึ้น Alert นี้ แสดงว่ายังไม่ได้เปิด Rules ใน Firebase Console
+                alert("เข้าถึงฐานข้อมูลไม่ได้! \nกรุณาไปที่ Firebase Console -> Realtime Database -> Rules \nแล้วเปลี่ยน .read และ .write เป็น true");
+                document.getElementById('headline').innerText = "Database Locked 🔒";
+            });
+        }
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            timer = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (isNaN(distance)) return;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                updateDisplay(days, hours, minutes, seconds);
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById("headline").innerText = endMessageStr;
+                    updateDisplay(0, 0, 0, 0);
+                    document.getElementById("countdown").style.opacity = "0.5";
+                } else {
+                    document.getElementById("countdown").style.opacity = "1";
+                }
+            }, 1000);
+        }
+
+        function updateDisplay(d, h, m, s) {
+            document.getElementById("days").innerText = d < 10 ? '0' + d : d;
+            document.getElementById("hours").innerText = h < 10 ? '0' + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? '0' + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? '0' + s : s;
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings');
+            if(panel.style.display === 'block') {
+                panel.style.display = 'none';
+                panel.classList.remove('active');
+            } else {
+                panel.style.display = 'block';
+                panel.classList.add('active');
+            }
+            document.getElementById('statusMsg').innerText = "";
+            document.getElementById('adminPass').value = "";
+        }
+
+        function saveToCloud() {
+            const pass = document.getElementById('adminPass').value;
+            const title = document.getElementById('titleInput').value.trim();
+            const dateVal = document.getElementById('datePicker').value;
+            const endMsg = document.getElementById('endMsgInput').value.trim();
+            const status = document.getElementById('statusMsg');
+
+            if (pass !== "9@Nooey") {
+                status.innerText = "❌ รหัสผ่านผิดครับ";
+                status.style.color = "#ff6b6b";
+                return;
+            }
+
+            if (title && dateVal) {
+                status.innerText = "⏳ กำลังบันทึก...";
+                status.style.color = "#ffd700";
+                
+                const timestamp = new Date(dateVal).getTime();
+                
+                db.ref('tripData').set({
+                    title: title,
+                    timestamp: timestamp,
+                    endMessage: endMsg || "Enjoy !!!"
+                }).then(() => {
+                    status.innerText = "✅ บันทึกสำเร็จ!";
+                    status.style.color = "#51cf66";
+                    setTimeout(() => toggleSettings(), 1500);
+                }).catch((error) => {
+                    status.innerText = "❌ Error: " + error.message;
+                    alert("บันทึกไม่ได้: " + error.message + "\n(อย่าลืมเช็ค Rules ใน Firebase)");
+                });
+            } else {
+                status.innerText = "⚠️ กรอกข้อมูลให้ครบ";
+                status.style.color = "#ffeb3b";
+            }
+        }
+    </script>
+</body>
+</html>
