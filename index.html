@@ -75,7 +75,6 @@
         .balloons { z-index: 2; }
         .balloon {
             position: absolute;
-            /* ปรับความสูงตรงนี้ครับ */
             bottom: 120px; 
             width: 50px;
             height: 65px;
@@ -83,28 +82,31 @@
             opacity: 0.85;
             box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
         }
+        
+        /* เชือกยาวขึ้น */
         .balloon::before {
             content: '';
             position: absolute;
-            /* ปรับเชือกให้ห้อยลงมา */
-            bottom: -20px;
+            /* ปรับตำแหน่งเริ่มเชือก (ต้องสัมพันธ์กับความสูง) */
+            bottom: -40px; 
             left: 50%;
             width: 2px;
-            height: 20px;
+            /* เพิ่มความยาวเชือกตรงนี้ */
+            height: 40px; 
             background: rgba(255, 255, 255, 0.6);
             transform: translateX(-50%);
         }
 
-        /* จัดตำแหน่งและสีลูกโป่ง 9 ลูก */
-        .b1 { left: 2%;  background-color: rgba(255, 99, 132, 0.7); animation: floatLow 6s ease-in-out infinite; transform: scale(1.1); }
-        .b2 { left: 13%; background-color: rgba(54, 162, 235, 0.7); animation: floatLow 7s ease-in-out infinite; animation-delay: 1s; transform: scale(0.9); }
-        .b3 { left: 24%; background-color: rgba(255, 206, 86, 0.7); animation: floatLow 8s ease-in-out infinite; animation-delay: 2s; transform: scale(1.2); }
-        .b4 { left: 35%; background-color: rgba(75, 192, 192, 0.7); animation: floatLow 6.5s ease-in-out infinite; animation-delay: 0.5s; transform: scale(0.8); }
-        .b5 { left: 46%; background-color: rgba(153, 102, 255, 0.7); animation: floatLow 7.5s ease-in-out infinite; animation-delay: 1.5s; }
-        .b6 { left: 57%; background-color: rgba(255, 159, 64, 0.7);  animation: floatLow 6.8s ease-in-out infinite; animation-delay: 2.5s; transform: scale(1.05); }
-        .b7 { left: 68%; background-color: rgba(201, 203, 207, 0.7); animation: floatLow 8.2s ease-in-out infinite; animation-delay: 0.8s; transform: scale(0.85); }
-        .b8 { left: 79%; background-color: rgba(100, 221, 23, 0.7);  animation: floatLow 7.1s ease-in-out infinite; animation-delay: 3s; transform: scale(1.15); }
-        .b9 { left: 90%; background-color: rgba(14, 165, 233, 0.7);  animation: floatLow 6.3s ease-in-out infinite; animation-delay: 1.2s; transform: scale(0.95); }
+        /* จัดตำแหน่ง 8 ลูก (กระจายตัวใหม่) */
+        .b1 { left: 6%;  background-color: rgba(255, 99, 132, 0.7); animation: floatLow 6s ease-in-out infinite; transform: scale(1.1); }
+        .b2 { left: 18%; background-color: rgba(54, 162, 235, 0.7); animation: floatLow 7s ease-in-out infinite; animation-delay: 1s; transform: scale(0.9); }
+        .b3 { left: 30%; background-color: rgba(255, 206, 86, 0.7); animation: floatLow 8s ease-in-out infinite; animation-delay: 2s; transform: scale(1.2); }
+        .b4 { left: 42%; background-color: rgba(75, 192, 192, 0.7); animation: floatLow 6.5s ease-in-out infinite; animation-delay: 0.5s; transform: scale(0.8); }
+        .b5 { left: 54%; background-color: rgba(153, 102, 255, 0.7); animation: floatLow 7.5s ease-in-out infinite; animation-delay: 1.5s; }
+        .b6 { left: 66%; background-color: rgba(255, 159, 64, 0.7);  animation: floatLow 6.8s ease-in-out infinite; animation-delay: 2.5s; transform: scale(1.05); }
+        .b7 { left: 78%; background-color: rgba(201, 203, 207, 0.7); animation: floatLow 8.2s ease-in-out infinite; animation-delay: 0.8s; transform: scale(0.85); }
+        .b8 { left: 90%; background-color: rgba(100, 221, 23, 0.7);  animation: floatLow 7.1s ease-in-out infinite; animation-delay: 3s; transform: scale(1.15); }
+        /* ลบ b9 ออกไปแล้ว */
 
         @keyframes floatLow {
             0%, 100% { transform: translateY(0) rotate(-3deg); }
@@ -122,7 +124,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            width: 95%; /* กว้างเกือบเต็มจอ */
+            width: 95%; 
             max-width: 600px;
             position: relative;
             animation: fadeInDown 0.8s ease-out;
@@ -137,11 +139,11 @@
             word-wrap: break-word;
         }
 
-        /* --- Grid Layout (แก้ไขใหม่ให้เรียงแถวเดียวตลอด) --- */
+        /* --- Grid Layout --- */
         .countdown-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* บังคับ 4 คอลัมน์เสมอ */
-            gap: 8px; /* ลดช่องว่างลงเพื่อให้พอดีมือถือ */
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 8px; 
         }
 
         .time-box {
@@ -152,11 +154,10 @@
             background: rgba(0, 0, 0, 0.25);
             padding: 8px 2px;
             border-radius: 12px;
-            /* เอา aspect-ratio ออก เพื่อให้ยืดหดตามเนื้อหาได้ดีขึ้นในจอเล็ก */
         }
 
         .number {
-            font-size: 2.5rem; /* ขนาดปกติ PC */
+            font-size: 2.5rem; 
             font-weight: 700;
             line-height: 1.1;
             font-variant-numeric: tabular-nums;
@@ -170,16 +171,16 @@
             font-weight: 500;
         }
 
-        /* --- Mobile Responsive (ปรับแต่งเฉพาะขนาดตัวอักษร) --- */
+        /* --- Mobile Responsive --- */
         @media (max-width: 600px) {
             .number {
-                font-size: 1.5rem; /* ลดขนาดตัวเลขในมือถือ */
+                font-size: 1.5rem; 
             }
             .label {
-                font-size: 0.6rem; /* ลดขนาดตัวหนังสือในมือถือ */
+                font-size: 0.6rem; 
             }
             .countdown-grid {
-                gap: 5px; /* ช่องว่างระหว่างกล่องเล็กลงอีกนิดในมือถือ */
+                gap: 5px; 
             }
         }
 
@@ -242,7 +243,6 @@
         <div class="balloon b6"></div>
         <div class="balloon b7"></div>
         <div class="balloon b8"></div>
-        <div class="balloon b9"></div>
     </div>
 
     <div class="container">
