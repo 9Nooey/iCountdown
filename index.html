@@ -11,6 +11,14 @@
             --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --glass-bg: rgba(255, 255, 255, 0.15);
             --glass-border: rgba(255, 255, 255, 0.25);
+            /* Train Colors Palette - Pastel & Cute */
+            --train-red: linear-gradient(to bottom, #ff8a8a, #d94545);
+            --train-red-dark: #a83232;
+            --train-blue: linear-gradient(to bottom, #87ceeb, #4682b4);
+            --train-yellow: linear-gradient(to bottom, #fff6b3, #ffd700);
+            --train-gold: #ffd700;
+            --train-metal: linear-gradient(to bottom, #d7d7d7, #999999);
+            --train-window: #b0e0e6;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -29,170 +37,187 @@
 
         /* --- Main Content Container --- */
         .container {
-            z-index: 10;
-            text-align: center;
-            background: var(--glass-bg);
-            padding: 2.5rem 1.5rem 2rem 1.5rem;
-            border-radius: 25px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            width: 95%; max-width: 600px;
-            position: relative;
-            animation: fadeInDown 0.8s ease-out;
-            margin-top: 60px; 
+            z-index: 10; text-align: center; background: var(--glass-bg); padding: 2.5rem 1.5rem 2rem 1.5rem; border-radius: 25px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); width: 95%; max-width: 600px; position: relative; animation: fadeInDown 0.8s ease-out; margin-top: 60px; 
         }
 
-        /* 🎈 ส่วนลูกโป่ง */
-        .balloons-container {
-            position: absolute;
-            top: -145px; 
-            left: 0;
-            width: 100%;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 15px;
-            pointer-events: none;
-            z-index: 20;
-        }
-        .balloon {
-            position: relative;
-            width: 45px;
-            height: 60px;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            opacity: 0.95;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
-        }
-        .balloon::before {
-            content: '';
-            position: absolute; bottom: -40px; left: 50%;
-            width: 2px; height: 40px;
-            background: rgba(255, 255, 255, 0.5);
-            transform: translateX(-50%);
-        }
+        /* 🎈 ลูกโป่ง */
+        .balloons-container { position: absolute; top: -145px; left: 0; width: 100%; height: 100px; display: flex; justify-content: center; align-items: flex-end; gap: 15px; pointer-events: none; z-index: 20; }
+        .balloon { position: relative; width: 45px; height: 60px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; opacity: 0.95; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1); }
+        .balloon::before { content: ''; position: absolute; bottom: -40px; left: 50%; width: 2px; height: 40px; background: rgba(255, 255, 255, 0.5); transform: translateX(-50%); }
         .b1 { background-color: rgba(255, 99, 132, 0.9); animation: floatHead 4s ease-in-out infinite; }
         .b2 { background-color: rgba(54, 162, 235, 0.9); animation: floatHead 4.5s ease-in-out infinite; animation-delay: 1s; }
         .b3 { background-color: rgba(255, 206, 86, 0.9); animation: floatHead 5s ease-in-out infinite; animation-delay: 2s; }
         .b4 { background-color: rgba(75, 192, 192, 0.9); animation: floatHead 4.2s ease-in-out infinite; animation-delay: 0.5s; }
         .b5 { background-color: rgba(153, 102, 255, 0.9); animation: floatHead 4.8s ease-in-out infinite; animation-delay: 1.5s; }
-        @keyframes floatHead {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-10px) rotate(3deg); }
-        }
+        @keyframes floatHead { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
 
         /* ====================================================
-           🚂 ส่วนรถไฟแบบสมจริง (CSS Train)
+           🚂 ส่วนรถไฟแบบสมจริง V2 (Cuter & More Realistic)
         ==================================================== */
         .train-track-area {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%; height: 80px;
-            z-index: 5; pointer-events: none;
-            border-bottom: 4px solid rgba(255,255,255,0.3); /* ราง */
-            overflow: hidden;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; /* เพิ่มความสูงพื้นที่ */
+            z-index: 5; pointer-events: none; overflow: hidden;
         }
-        
-        /* ไม้หมอนรางรถไฟ */
+        /* รางรถไฟแบบมีมิติ */
+        .track {
+            position: absolute; bottom: 5px; width: 100%; height: 8px;
+            background: linear-gradient(to bottom, #a8a8a8, #757575);
+            border-radius: 4px;
+        }
         .track-ties {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 10px;
-            background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.3) 50%);
-            background-size: 40px 100%;
+            position: absolute; bottom: 2px; width: 100%; height: 14px;
+            background-image: repeating-linear-gradient(90deg, #5d4037, #5d4037 10px, transparent 10px, transparent 30px);
+            opacity: 0.8;
         }
 
-        /* ตัวคอนเทนเนอร์รถไฟที่วิ่ง */
+        /* กลุ่มรถไฟ */
         .train-group {
-            position: absolute;
-            bottom: 8px; /* ลอยเหนือรางนิดนึง */
-            left: -300px;
-            display: flex;
-            align-items: flex-end;
-            animation: runTrain 15s linear infinite;
+            position: absolute; bottom: 18px; left: -400px;
+            display: flex; align-items: flex-end;
+            animation: runTrain 18s linear infinite; /* วิ่งช้าลงนิดนึงให้ดูมีน้ำหนัก */
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
         }
 
+        /* --- ส่วนประกอบรถไฟ --- */
         /* หัวรถจักร */
         .locomotive {
-            position: relative;
-            width: 80px; height: 55px;
-            background: #ff6b6b; /* สีหัวรถ */
-            border-radius: 10px 10px 0 0;
+            position: relative; width: 90px; height: 60px;
+            background: var(--train-red);
+            border-radius: 15px 30px 10px 10px; /* หัวมนๆ */
             margin-right: 5px;
-            animation: bounce 0.3s infinite alternate;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
+            animation: bounce 0.35s infinite alternate ease-in-out;
+            z-index: 2;
         }
+        /* แถบทองคาด */
+        .locomotive::after {
+            content: ''; position: absolute; bottom: 10px; left:0; width: 100%; height: 5px; background: var(--train-gold); opacity: 0.8;
+        }
+        /* ห้องคนขับ */
         .cabin {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 40px; height: 35px;
-            background: #c0392b;
-            border-radius: 5px 5px 0 0;
+            position: absolute; bottom: 5px; left: 5px; width: 45px; height: 45px;
+            background: var(--train-red-dark); border-radius: 8px;
+            border: 2px solid var(--train-gold);
+            overflow: hidden;
         }
+        /* หลังคาห้องคนขับ */
+        .cabin::before {
+            content: ''; position: absolute; top: -8px; left: -5px; width: 55px; height: 10px;
+            background: #5d4037; border-radius: 5px 5px 0 0;
+        }
+        /* หน้าต่าง */
         .cabin-window {
-            position: absolute; top: 5px; left: 5px; width: 25px; height: 15px;
-            background: #87ceeb; border-radius: 3px;
+            position: absolute; top: 10px; left: 5px; width: 32px; height: 18px;
+            background: var(--train-window); border-radius: 4px; border: 2px solid #fff;
         }
+        /* ปล่องควัน */
         .chimney {
-            position: absolute; top: -15px; right: 15px;
-            width: 15px; height: 20px;
-            background: #333;
+            position: absolute; top: -18px; right: 15px; width: 20px; height: 25px;
+            background: var(--train-red-dark); border-radius: 4px;
+            border-top: 4px solid var(--train-gold);
         }
-        .chimney-top {
-            position: absolute; top: -5px; left: -2px;
-            width: 19px; height: 5px; background: #333;
+        /* ปากปล่องบานๆ */
+        .chimney::before {
+             content: ''; position: absolute; top: -8px; left: -5px; width: 30px; height: 10px;
+             background: var(--train-red-dark); border-radius: 50%;
+        }
+        /* กันชนหน้า (Cowcatcher) */
+        .cowcatcher {
+            position: absolute; bottom: 0; right: -10px;
+            width: 0; height: 0;
+            border-left: 15px solid var(--train-metal);
+            border-top: 15px solid transparent;
+            border-bottom: 5px solid transparent;
         }
 
-        /* โบกี้ */
+        /* โบกี้โดยสาร */
         .carriage {
-            position: relative;
-            width: 60px; height: 45px;
-            background: #4ecdc4; /* สีโบกี้ */
-            border-radius: 5px 5px 0 0;
-            margin-right: 5px;
-            animation: bounce 0.3s infinite alternate;
-            animation-delay: 0.1s;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+            position: relative; width: 70px; height: 50px;
+            background: var(--train-blue);
+            border-radius: 12px; /* โค้งมน */
+            margin-right: 8px; /* ระยะห่างระหว่างโบกี้ */
+            animation: bounce 0.35s infinite alternate ease-in-out;
+            border-top: 3px solid #fff; /* ขอบหลังคา */
         }
+        /* หลังคาโค้ง */
+        .carriage::before {
+             content: ''; position: absolute; top: -6px; left: 2px; width: 66px; height: 8px;
+             background: var(--train-blue); border-radius: 10px 10px 0 0; filter: brightness(1.1);
+        }
+        /* ตัวเชื่อมโบกี้ */
+        .carriage::after {
+             content: ''; position: absolute; bottom: 10px; right: -8px; width: 8px; height: 6px; background: #555; border-radius: 2px;
+        }
+        .carriage.yellow { background: var(--train-yellow); }
+        .carriage.yellow::before { background: var(--train-yellow); filter: brightness(1.1); }
+        
+        /* หน้าต่างโบกี้ (มี 2 บาน) */
         .carriage-window {
-            position: absolute; top: 8px; left: 10px; width: 40px; height: 15px;
-            background: #87ceeb; border-radius: 2px;
+            position: absolute; top: 12px; left: 8px; width: 22px; height: 18px;
+            background: var(--train-window); border-radius: 4px; border: 2px solid #fff;
         }
+        .carriage-window.w2 { left: 38px; }
 
-        /* ล้อรถไฟ */
+
+        /* --- ส่วนล้อและก้านสูบ (ความสมจริง) --- */
         .wheels-container {
-            position: absolute; bottom: -8px; left: 5px;
-            width: 100%; display: flex; gap: 5px;
+            position: absolute; bottom: -10px; left: 5px;
+            width: auto; display: flex; gap: 4px;
+            z-index: 1;
         }
         .wheel {
-            width: 18px; height: 18px;
-            background: #333;
-            border-radius: 50%;
-            border: 2px dashed #999; /* ทำให้เห็นการหมุน */
+            position: relative; width: 20px; height: 20px;
+            background: radial-gradient(circle, #555 40%, #333 100%);
+            border-radius: 50%; border: 2px solid var(--train-metal);
             animation: spin 1s linear infinite;
         }
-        .wheel-big { width: 22px; height: 22px; }
+        /* ซี่ล้อ */
+        .wheel::after {
+            content: ''; position: absolute; top:0; left: 8px; width: 2px; height: 100%; background: var(--train-metal);
+        }
+        .wheel::before {
+            content: ''; position: absolute; top:8px; left: 0; width: 100%; height: 2px; background: var(--train-metal);
+        }
 
-        /* ควัน */
+        .wheel-big { width: 26px; height: 26px; }
+        
+        /* ก้านสูบ (Connecting Rod) */
+        .connecting-rod {
+            position: absolute;
+            bottom: 8px; left: 10px;
+            width: 50px; height: 4px;
+            background: var(--train-metal);
+            border-radius: 2px;
+            border: 1px solid #777;
+            animation: rod-move 1s linear infinite alternate; /* ขยับไปมา */
+            transform-origin: left center;
+        }
+
+
+        /* --- ควัน (นุ่มฟูขึ้น) --- */
         .smoke {
-            position: absolute; top: -25px; right: 10px;
-            width: 10px; height: 10px;
-            background: rgba(255,255,255,0.8);
+            position: absolute; top: -30px; right: 15px;
+            width: 15px; height: 15px;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0) 70%);
             border-radius: 50%;
-            animation: puff 2s infinite;
+            filter: blur(3px); /* ทำให้ฟุ้ง */
+            animation: puff-soft 2.5s infinite;
         }
-        .smoke:nth-child(2) { animation-delay: 0.5s; }
-        .smoke:nth-child(3) { animation-delay: 1s; }
+        .smoke:nth-child(2) { animation-delay: 0.6s; width: 18px; height: 18px; right: 10px; }
+        .smoke:nth-child(3) { animation-delay: 1.2s; width: 12px; height: 12px; right: 20px; }
 
-        @keyframes runTrain {
-            0% { transform: translateX(-300px); }
-            100% { transform: translateX(120vw); }
-        }
+
+        /* --- Animations --- */
+        @keyframes runTrain { 0% { transform: translateX(-500px); } 100% { transform: translateX(120vw); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-1px); } }
-        @keyframes puff {
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-2px); } }
+        @keyframes rod-move {
+            0% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(10px) rotate(-5deg); }
+        }
+        @keyframes puff-soft {
             0% { opacity: 0; transform: translateY(0) scale(0.5); }
-            50% { opacity: 0.8; }
-            100% { opacity: 0; transform: translateY(-40px) scale(2); }
+            40% { opacity: 0.7; }
+            100% { opacity: 0; transform: translateY(-50px) translateX(-20px) scale(2.5); }
         }
         /* ==================================================== */
 
@@ -249,20 +274,22 @@
     </ul>
 
     <div class="train-track-area">
-        <div class="track-ties"></div> <div class="train-group">
-            <div class="carriage">
+        <div class="track-ties"></div> <div class="track"></div> <div class="train-group">
+            <div class="carriage yellow">
                 <div class="carriage-window"></div>
+                <div class="carriage-window w2"></div>
                 <div class="wheels-container">
                     <div class="wheel"></div>
-                    <div class="wheel"></div>
+                    <div class="wheel" style="margin-left: 25px;"></div>
                 </div>
             </div>
             
-            <div class="carriage" style="background: #ffeaa7;">
+            <div class="carriage">
                 <div class="carriage-window"></div>
+                <div class="carriage-window w2"></div>
                 <div class="wheels-container">
                     <div class="wheel"></div>
-                    <div class="wheel"></div>
+                    <div class="wheel" style="margin-left: 25px;"></div>
                 </div>
             </div>
 
@@ -271,14 +298,14 @@
                     <div class="cabin-window"></div>
                 </div>
                 <div class="chimney">
-                    <div class="chimney-top"></div>
                     <div class="smoke"></div>
                     <div class="smoke"></div>
                     <div class="smoke"></div>
                 </div>
-                <div class="wheels-container" style="justify-content: flex-end; padding-right: 5px;">
+                <div class="cowcatcher"></div> <div class="wheels-container" style="justify-content: flex-end; padding-right: 5px; bottom: -12px;">
+                    <div class="connecting-rod"></div>
                     <div class="wheel"></div>
-                    <div class="wheel wheel-big"></div>
+                    <div class="wheel wheel-big" style="margin-left: 5px;"></div>
                 </div>
             </div>
         </div>
