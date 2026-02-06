@@ -6,11 +6,13 @@
     <title>Trip Countdown</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS เดิมที่สวยงาม */
+        /* --- ธีมหลัก --- */
         :root { --primary-color: #ffffff; --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-        body { font-family: 'Prompt', sans-serif; background: var(--bg-gradient); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: var(--primary-color); }
-        .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
+        body { font-family: 'Prompt', sans-serif; background: var(--bg-gradient); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: var(--primary-color); position: relative; }
+
+        /* --- พื้นหลังวงกลมเดิม (ปรับ z-index ลงเพื่อให้ลูกโป่งอยู่ข้างหน้า) --- */
+        .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -2; pointer-events: none; }
         .circles li { position: absolute; display: block; list-style: none; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.2); animation: animate 25s linear infinite; bottom: -150px; border-radius: 50%; }
         .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
         .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
@@ -23,7 +25,30 @@
         .circles li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
         .circles li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
         @keyframes animate { 0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; } 100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; } }
-        .container { text-align: center; background: rgba(255, 255, 255, 0.1); padding: 3rem 2rem; border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.18); width: 90%; max-width: 600px; position: relative; animation: fadeIn 1s ease-in; }
+
+        /* --- 🎈 ใหม่! เอฟเฟคลูกโป่ง 🎈 --- */
+        .balloon-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+        .balloon {
+            position: absolute; bottom: -150px; opacity: 0.7; border-radius: 50% 50% 45% 45%;
+            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.1); animation: floatBalloon linear infinite;
+        }
+        /* เชือก */
+        .balloon::after { content: ''; position: absolute; bottom: -22px; left: 50%; width: 1px; height: 25px; background: rgba(255,255,255,0.6); }
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(25deg); opacity: 0; }
+        }
+        /* ตั้งค่าลูกโป่งแต่ละลูก (สี ขนาด ตำแหน่ง ความเร็ว) */
+        .b1 { left: 5%; width: 50px; height: 70px; background: rgba(255, 99, 132, 0.7); animation-duration: 7s; animation-delay: 0s; }
+        .b2 { left: 25%; width: 70px; height: 90px; background: rgba(54, 162, 235, 0.7); animation-duration: 10s; animation-delay: 2s; }
+        .b3 { left: 45%; width: 40px; height: 60px; background: rgba(255, 206, 86, 0.7); animation-duration: 8s; animation-delay: 4s; }
+        .b4 { left: 70%; width: 60px; height: 80px; background: rgba(75, 192, 192, 0.7); animation-duration: 12s; animation-delay: 1s; }
+        .b5 { left: 85%; width: 55px; height: 75px; background: rgba(153, 102, 255, 0.7); animation-duration: 9s; animation-delay: 3s; }
+
+
+        /* --- การ์ดแสดงผลกลาง --- */
+        .container { text-align: center; background: rgba(255, 255, 255, 0.1); padding: 3rem 2rem; border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.18); width: 90%; max-width: 600px; position: relative; animation: fadeIn 1s ease-in; z-index: 10; }
         .settings-btn { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; z-index: 10; }
         .settings-panel { display: none; margin-top: 20px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 10px; }
         .settings-panel.active { display: block; }
@@ -40,6 +65,14 @@
 </head>
 <body>
     <ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+    
+    <div class="balloon-container">
+        <div class="balloon b1"></div>
+        <div class="balloon b2"></div>
+        <div class="balloon b3"></div>
+        <div class="balloon b4"></div>
+        <div class="balloon b5"></div>
+    </div>
 
     <div class="container">
         <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
@@ -47,15 +80,12 @@
         <h1 id="headline">Loading...</h1>
         
         <div id="settings" class="settings-panel">
-            <p style="margin-bottom:5px; font-size:0.8rem;">รหัส Admin (ป้องกันคนอื่นกดเล่น)</p>
-            <input type="password" id="adminPass" class="input-field" placeholder="ใส่รหัสเพื่อแก้ไข">
-            
+            <p style="margin-bottom:5px; font-size:0.8rem;">Password</p>
+            <input type="password" id="adminPass" class="input-field" placeholder="ใส่รหัส 1234">
             <p style="margin-bottom:5px; font-size:0.8rem; margin-top:10px;">ตั้งชื่อทริป</p>
             <input type="text" id="titleInput" class="input-field" placeholder="ชื่อทริป...">
-            
             <p style="margin-bottom:5px; font-size:0.8rem; margin-top:10px;">ตั้งวันเดินทาง</p>
             <input type="datetime-local" id="datePicker" class="input-field">
-            
             <button class="save-btn" onclick="saveToCloud()">บันทึกข้อมูลออนไลน์ ☁️</button>
             <p id="statusMsg" style="font-size: 0.8rem; margin-top: 5px; color: #ffeb3b;"></p>
         </div>
@@ -73,96 +103,61 @@
 
     <script>
         // --------------------------------------------------------
-        // 1. ใส่ Config จาก Firebase ของคุณตรงนี้ (แทนที่ XXX)
+        // 🔴🔴🔴 ใส่ Config จาก Firebase ของคุณตรงนี้ 🔴🔴🔴
         // --------------------------------------------------------
         const firebaseConfig = {
-            apiKey: "AIzaSyCIjYBKVd15HVUS25lPKRrb507UY75_vCc",
-            authDomain: "icountdown.firebaseapp.com",
-            databaseURL: "https://icountdown-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "icountdown",
-            storageBucket: "icountdown.firebasestorage.app",
-            messagingSenderId: "108107979488",
-            appId: "1:108107979488:web:38c7b432538cde9d568e85"
-};
+          apiKey: "AIzaSyCIjYBKVd15HVUS25lPKRrb507UY75_vCc",
+          authDomain: "icountdown.firebaseapp.com",
+          databaseURL: "https://icountdown-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "icountdown",
+          storageBucket: "icountdown.firebasestorage.app",
+          messagingSenderId: "108107979488",
+          appId: "1:108107979488:web:38c7b432538cde9d568e85"
+    };
         // --------------------------------------------------------
 
-        // เริ่มต้น Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-
-        let targetDate;
-        let timer;
+        let targetDate; let timer;
         
-        // ฟังก์ชันอ่านข้อมูลจาก Cloud (ทำงานตลอดเวลาแบบ Realtime)
         db.ref('tripData').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // ถ้ามีข้อมูล อัปเดตหน้าจอทันที
                 targetDate = data.timestamp;
                 document.getElementById('headline').innerText = data.title;
                 startTimer();
-            } else {
-                // ถ้าเป็นครั้งแรกยังไม่มีข้อมูล
-                document.getElementById('headline').innerText = "รอการตั้งค่า...";
-            }
+            } else { document.getElementById('headline').innerText = "รอการตั้งค่า..."; }
         });
 
         function startTimer() {
             if (timer) clearInterval(timer);
             timer = setInterval(function() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
+                const now = new Date().getTime(); const distance = targetDate - now;
                 if (isNaN(distance)) return;
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                 document.getElementById("days").innerText = days < 10 ? '0' + days : days;
                 document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
                 document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
                 document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
-
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById("headline").innerText = "Enjoy the Trip! 🎉";
-                }
+                if (distance < 0) { clearInterval(timer); document.getElementById("headline").innerText = "Enjoy the Trip! 🎉"; }
             }, 1000);
         }
 
-        function toggleSettings() {
-            document.getElementById('settings').classList.toggle('active');
-        }
+        function toggleSettings() { document.getElementById('settings').classList.toggle('active'); }
 
         function saveToCloud() {
             const pass = document.getElementById('adminPass').value;
             const title = document.getElementById('titleInput').value;
             const dateVal = document.getElementById('datePicker').value;
-
-            // รหัสผ่านง่ายๆ (แก้ไขได้ที่นี่)
-            if (pass !== "9@Nooey") { 
-                alert("รหัสผ่านผิดครับ!");
-                return;
-            }
-
+            if (pass !== "9@Nooey") { alert("รหัสผ่านผิดครับ!"); return; }
             if (title && dateVal) {
-                const timestamp = new Date(dateVal).getTime();
-                
-                // ส่งข้อมูลไปเก็บที่ Firebase
-                db.ref('tripData').set({
-                    title: title,
-                    timestamp: timestamp
-                }).then(() => {
-                    document.getElementById('statusMsg').innerText = "บันทึกสำเร็จ! เพื่อนทุกคนเห็นแล้ว";
-                    setTimeout(() => toggleSettings(), 1500);
-                }).catch((error) => {
-                    alert("เกิดข้อผิดพลาด: " + error.message);
-                });
-            } else {
-                alert("กรุณากรอกข้อมูลให้ครบ");
-            }
+                db.ref('tripData').set({ title: title, timestamp: new Date(dateVal).getTime() })
+                .then(() => { document.getElementById('statusMsg').innerText = "บันทึกสำเร็จ!"; setTimeout(() => toggleSettings(), 1500); })
+                .catch((error) => { alert("Error: " + error.message); });
+            } else { alert("กรุณากรอกข้อมูลให้ครบ"); }
         }
     </script>
 </body>
