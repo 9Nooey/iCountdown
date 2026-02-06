@@ -69,42 +69,55 @@
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
         }
 
-        /* Layer 2: Floating Balloons (Low Level) */
-        .balloons { z-index: 2; }
-        .balloon {
+        /* =========================================
+           แก้ไขส่วนลูกโป่ง (Layer 2)
+           - ใช้ Flexbox จัดกึ่งกลางและระยะห่างเท่ากัน
+           - ปรับ Animation ให้ไล่ระดับกัน
+        ========================================= */
+        .balloons { 
+            z-index: 2;
             position: absolute;
-            bottom: 120px; 
+            bottom: 120px; /* ความสูงจากขอบล่าง */
+            width: 100%; /* กว้างเต็มจอเพื่อให้จัดกึ่งกลางได้ */
+            display: flex; /* ใช้ Flexbox */
+            justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
+            gap: 20px; /* ระยะห่างระหว่างลูกโป่งเท่ากัน (ปรับเลขนี้ถ้ายากให้ห่างขึ้น/แคบลง) */
+            padding: 0 10px; /* กันชนขอบจอ */
+        }
+
+        .balloon {
+            position: relative; /* เปลี่ยนเป็น Relative เพื่อให้อยู่ใน Flex flow */
             width: 50px;
             height: 65px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            opacity: 0.85;
+            opacity: 0.9;
             box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
         }
-        /* แก้ไขเชือกตรงนี้ */
+
         .balloon::before {
             content: '';
             position: absolute;
-            /* ปรับเชือกให้ยาวขึ้นและห้อยลงมา */
-            bottom: -45px; /* ค่าติดลบเท่ากับความสูง */
+            bottom: -45px;
             left: 50%;
             width: 2px;
-            height: 45px; /* เพิ่มความยาวเชือก */
+            height: 45px;
             background: rgba(255, 255, 255, 0.6);
             transform: translateX(-50%);
         }
 
-        /* จัดตำแหน่งใหม่สำหรับ 5 ลูก ให้สมดุลในจอมือถือ */
-        .b1 { left: 15%;  background-color: rgba(255, 99, 132, 0.7); animation: floatLow 6s ease-in-out infinite; transform: scale(1.1); }
-        .b2 { left: 35%; background-color: rgba(54, 162, 235, 0.7); animation: floatLow 7s ease-in-out infinite; animation-delay: 1s; transform: scale(0.9); }
-        .b3 { left: 55%; background-color: rgba(255, 206, 86, 0.7); animation: floatLow 8s ease-in-out infinite; animation-delay: 2s; transform: scale(1.2); }
-        .b4 { left: 75%; background-color: rgba(75, 192, 192, 0.7); animation: floatLow 6.5s ease-in-out infinite; animation-delay: 0.5s; transform: scale(0.8); }
-        .b5 { left: 85%; background-color: rgba(153, 102, 255, 0.7); animation: floatLow 7.5s ease-in-out infinite; animation-delay: 1.5s; }
-        /* ลบ style ของ b6-b9 ออก */
+        /* ตั้งค่า Animation: ทุกตัวใช้เวลา 5 วินาทีเท่ากัน แต่เริ่มไม่พร้อมกัน */
+        .b1 { background-color: rgba(255, 99, 132, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 0s; }
+        .b2 { background-color: rgba(54, 162, 235, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 1s; }
+        .b3 { background-color: rgba(255, 206, 86, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 2s; }
+        .b4 { background-color: rgba(75, 192, 192, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 3s; }
+        .b5 { background-color: rgba(153, 102, 255, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 4s; }
 
-        @keyframes floatLow {
+        /* Animation แบบคลื่น: ลอยขึ้นลงสม่ำเสมอ */
+        @keyframes floatWave {
             0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-25px) rotate(3deg); }
+            50% { transform: translateY(-30px) rotate(3deg); }
         }
+        /* ========================================= */
 
         /* --- Main Content --- */
         .container {
@@ -147,7 +160,6 @@
             background: rgba(0, 0, 0, 0.25);
             padding: 8px 2px;
             border-radius: 12px;
-            /* เอา aspect-ratio ออก เพื่อให้ยืดหดตามเนื้อหาได้ดีขึ้นในจอเล็ก */
         }
 
         .number {
@@ -176,6 +188,8 @@
             .countdown-grid {
                 gap: 5px; /* ช่องว่างระหว่างกล่องเล็กลงอีกนิดในมือถือ */
             }
+            /* ปรับระยะห่างลูกโป่งในมือถือให้น้อยลงหน่อย */
+            .balloons { gap: 10px; } 
         }
 
         /* --- Settings Panel --- */
