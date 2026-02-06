@@ -32,32 +32,34 @@
             z-index: 10;
             text-align: center;
             background: var(--glass-bg);
-            padding: 2.5rem 1.5rem 2rem 1.5rem; /* เพิ่ม padding บน */
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
             border-radius: 25px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             width: 95%; max-width: 600px;
-            position: relative; /* ให้ลูกโป่งเกาะกับกล่องนี้ */
+            position: relative;
             animation: fadeInDown 0.8s ease-out;
-            margin-top: 40px; /* เว้นที่ด้านบนให้ลูกโป่งลอย */
+            /* เพิ่มระยะห่างด้านบนอีกนิด เผื่อลูกโป่งลอยสูง */
+            margin-top: 60px; 
         }
 
         /* ====================================================
-           🎈 ส่วนลูกโป่ง (จัดวางให้อยู่บนหัวกรอบ)
+           🎈 ส่วนลูกโป่ง (แก้ไขตำแหน่งใหม่)
         ==================================================== */
         .balloons-container {
             position: absolute;
-            top: -95px; /* ดันขึ้นไปเหนือกล่อง */
+            /* ดันขึ้นไปสูงๆ เพื่อให้ปลายเชือกอยู่เหนือกล่องพอดี */
+            top: -145px; 
             left: 0;
             width: 100%;
             height: 100px;
             display: flex;
-            justify-content: center; /* จัดกึ่งกลาง */
-            align-items: flex-end;
-            gap: 15px; /* ระยะห่างระหว่างลูกโป่ง */
-            pointer-events: none; /* เพื่อให้กดทะลุไปโดนปุ่มได้ */
+            justify-content: center;
+            align-items: flex-end; /* ให้ลูกโป่งอยู่ก้น container นี้ */
+            gap: 15px;
+            pointer-events: none;
             z-index: 20;
         }
 
@@ -74,13 +76,19 @@
         .balloon::before {
             content: '';
             position: absolute;
-            bottom: -40px;
+            bottom: -40px; /* เชือกยาว 40px ห้อยลงมา */
             left: 50%;
             width: 2px;
             height: 40px;
             background: rgba(255, 255, 255, 0.5);
             transform: translateX(-50%);
         }
+        /* สรุปการคำนวณตำแหน่ง:
+           - balloons-container ก้นอยู่ที่ -45px (เทียบกับขอบบนกล่องหลัก)
+           - ลูกโป่งอยู่ก้น container นั้น
+           - เชือกห้อยลงมาอีก 40px
+           - ดังนั้น ปลายเชือกจะอยู่ที่ -45px + 40px = -5px (อยู่เหนือกล่อง 5px)
+        */
 
         /* สีและ Animation */
         .b1 { background-color: rgba(255, 99, 132, 0.9); animation: floatHead 4s ease-in-out infinite; }
@@ -124,7 +132,7 @@
             width: 35px; height: 35px;
             border: 1px solid var(--glass-border);
             color: #fff; font-size: 1.2rem; cursor: pointer;
-            z-index: 50; /* สูงสุดเพื่อให้กดติดเสมอ */
+            z-index: 50;
             display: flex; align-items: center; justify-content: center;
         }
         .settings-btn:hover { background: rgba(255,255,255,0.4); }
@@ -224,10 +232,7 @@
             const connectedRef = db.ref(".info/connected");
             connectedRef.on("value", (snap) => {
                 if (snap.val() === true) {
-                    // console.log("connected");
-                } else {
-                    // ถ้าต่อไม่ติด อาจจะเป็นที่เน็ต หรือ Rules
-                    // document.getElementById('headline').innerText = "Connecting...";
+                    // connected
                 }
             });
 
@@ -247,7 +252,6 @@
                     document.getElementById('headline').innerText = "กด ⚙️ เพื่อตั้งค่า";
                 }
             }, (error) => {
-                // ถ้าขึ้น Alert นี้ แสดงว่ายังไม่ได้เปิด Rules ใน Firebase Console
                 alert("เข้าถึงฐานข้อมูลไม่ได้! \nกรุณาไปที่ Firebase Console -> Realtime Database -> Rules \nแล้วเปลี่ยน .read และ .write เป็น true");
                 document.getElementById('headline').innerText = "Database Locked 🔒";
             });
@@ -321,7 +325,7 @@
                 db.ref('tripData').set({
                     title: title,
                     timestamp: timestamp,
-                    endMessage: endMsg || "Enjoy !!!"
+                    endMessage: endMsg || "หมดเวลาแล้ว!"
                 }).then(() => {
                     status.innerText = "✅ บันทึกสำเร็จ!";
                     status.style.color = "#51cf66";
