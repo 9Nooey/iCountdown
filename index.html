@@ -70,23 +70,24 @@
         }
 
         /* =========================================
-           แก้ไขส่วนลูกโป่ง (Layer 2)
-           - ใช้ Flexbox จัดกึ่งกลางและระยะห่างเท่ากัน
-           - ปรับ Animation ให้ไล่ระดับกัน
+           แก้ไขตำแหน่งลูกโป่ง (ให้อยู่ขอบล่างสุด)
         ========================================= */
         .balloons { 
             z-index: 2;
             position: absolute;
-            bottom: 20px; /* ความสูงจากขอบล่าง */
-            width: 100%; /* กว้างเต็มจอเพื่อให้จัดกึ่งกลางได้ */
-            display: flex; /* ใช้ Flexbox */
-            justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
-            gap: 20px; /* ระยะห่างระหว่างลูกโป่งเท่ากัน (ปรับเลขนี้ถ้ายากให้ห่างขึ้น/แคบลง) */
-            padding: 0 10px; /* กันชนขอบจอ */
+            /* เปลี่ยนจาก 120px เป็น 0 เพื่อให้อยู่ติดขอบล่าง */
+            bottom: 0; 
+            width: 100%; 
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+            padding: 0 10px;
+            /* เพิ่ม Padding ด้านล่างเล็กน้อยเพื่อให้ลูกโป่งลอยสูงขึ้นมานิดนึง */
+            padding-bottom: 20px; 
         }
 
         .balloon {
-            position: relative; /* เปลี่ยนเป็น Relative เพื่อให้อยู่ใน Flex flow */
+            position: relative;
             width: 50px;
             height: 65px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
@@ -105,14 +106,12 @@
             transform: translateX(-50%);
         }
 
-        /* ตั้งค่า Animation: ทุกตัวใช้เวลา 5 วินาทีเท่ากัน แต่เริ่มไม่พร้อมกัน */
         .b1 { background-color: rgba(255, 99, 132, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 0s; }
         .b2 { background-color: rgba(54, 162, 235, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 1s; }
         .b3 { background-color: rgba(255, 206, 86, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 2s; }
         .b4 { background-color: rgba(75, 192, 192, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 3s; }
         .b5 { background-color: rgba(153, 102, 255, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 4s; }
 
-        /* Animation แบบคลื่น: ลอยขึ้นลงสม่ำเสมอ */
         @keyframes floatWave {
             0%, 100% { transform: translateY(0) rotate(-3deg); }
             50% { transform: translateY(-30px) rotate(3deg); }
@@ -130,7 +129,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            width: 95%; /* กว้างเกือบเต็มจอ */
+            width: 95%; 
             max-width: 600px;
             position: relative;
             animation: fadeInDown 0.8s ease-out;
@@ -145,11 +144,10 @@
             word-wrap: break-word;
         }
 
-        /* --- Grid Layout (แก้ไขใหม่ให้เรียงแถวเดียวตลอด) --- */
         .countdown-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* บังคับ 4 คอลัมน์เสมอ */
-            gap: 8px; /* ลดช่องว่างลงเพื่อให้พอดีมือถือ */
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
 
         .time-box {
@@ -163,7 +161,7 @@
         }
 
         .number {
-            font-size: 2.5rem; /* ขนาดปกติ PC */
+            font-size: 2.5rem;
             font-weight: 700;
             line-height: 1.1;
             font-variant-numeric: tabular-nums;
@@ -177,18 +175,10 @@
             font-weight: 500;
         }
 
-        /* --- Mobile Responsive (ปรับแต่งเฉพาะขนาดตัวอักษร) --- */
         @media (max-width: 600px) {
-            .number {
-                font-size: 1.5rem; /* ลดขนาดตัวเลขในมือถือ */
-            }
-            .label {
-                font-size: 0.6rem; /* ลดขนาดตัวหนังสือในมือถือ */
-            }
-            .countdown-grid {
-                gap: 5px; /* ช่องว่างระหว่างกล่องเล็กลงอีกนิดในมือถือ */
-            }
-            /* ปรับระยะห่างลูกโป่งในมือถือให้น้อยลงหน่อย */
+            .number { font-size: 1.5rem; }
+            .label { font-size: 0.6rem; }
+            .countdown-grid { gap: 5px; }
             .balloons { gap: 10px; } 
         }
 
