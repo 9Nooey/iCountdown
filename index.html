@@ -11,7 +11,7 @@
             --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --glass-bg: rgba(255, 255, 255, 0.15);
             --glass-border: rgba(255, 255, 255, 0.25);
-            /* Train Colors Palette - Pastel & Cute */
+            /* Train Colors */
             --train-red: linear-gradient(to bottom, #ff8a8a, #d94545);
             --train-red-dark: #a83232;
             --train-blue: linear-gradient(to bottom, #87ceeb, #4682b4);
@@ -52,13 +52,12 @@
         @keyframes floatHead { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
 
         /* ====================================================
-           🚂 ส่วนรถไฟแบบสมจริง V2 (Cuter & More Realistic)
+           🚂 ส่วนรถไฟ (Train V3 - Fixed Run & Better Smoke)
         ==================================================== */
         .train-track-area {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; /* เพิ่มความสูงพื้นที่ */
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 90px;
             z-index: 5; pointer-events: none; overflow: hidden;
         }
-        /* รางรถไฟแบบมีมิติ */
         .track {
             position: absolute; bottom: 5px; width: 100%; height: 8px;
             background: linear-gradient(to bottom, #a8a8a8, #757575);
@@ -70,191 +69,129 @@
             opacity: 0.8;
         }
 
-        /* กลุ่มรถไฟ */
         .train-group {
-            position: absolute; bottom: 18px; left: -400px;
+            position: absolute; bottom: 18px; 
+            /* เริ่มต้นที่นอกจอทางซ้าย (ระยะห่างเท่ากับความยาวรถไฟ) */
+            left: -400px; 
             display: flex; align-items: flex-end;
-            animation: runTrain 18s linear infinite; /* วิ่งช้าลงนิดนึงให้ดูมีน้ำหนัก */
+            /* แก้ไข Animation การวิ่ง ให้วิ่งพ้นจอแน่นอน */
+            animation: runTrain 15s linear infinite; 
             filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
         }
 
-        /* --- ส่วนประกอบรถไฟ --- */
-        /* หัวรถจักร */
+        /* ส่วนประกอบรถไฟ */
         .locomotive {
             position: relative; width: 90px; height: 60px;
             background: var(--train-red);
-            border-radius: 15px 30px 10px 10px; /* หัวมนๆ */
-            margin-right: 5px;
-            animation: bounce 0.35s infinite alternate ease-in-out;
-            z-index: 2;
+            border-radius: 15px 30px 10px 10px; margin-right: 5px;
+            animation: bounce 0.35s infinite alternate ease-in-out; z-index: 2;
         }
-        /* แถบทองคาด */
-        .locomotive::after {
-            content: ''; position: absolute; bottom: 10px; left:0; width: 100%; height: 5px; background: var(--train-gold); opacity: 0.8;
-        }
-        /* ห้องคนขับ */
+        .locomotive::after { content: ''; position: absolute; bottom: 10px; left:0; width: 100%; height: 5px; background: var(--train-gold); opacity: 0.8; }
         .cabin {
             position: absolute; bottom: 5px; left: 5px; width: 45px; height: 45px;
-            background: var(--train-red-dark); border-radius: 8px;
-            border: 2px solid var(--train-gold);
-            overflow: hidden;
+            background: var(--train-red-dark); border-radius: 8px; border: 2px solid var(--train-gold); overflow: hidden;
         }
-        /* หลังคาห้องคนขับ */
-        .cabin::before {
-            content: ''; position: absolute; top: -8px; left: -5px; width: 55px; height: 10px;
-            background: #5d4037; border-radius: 5px 5px 0 0;
-        }
-        /* หน้าต่าง */
+        .cabin::before { content: ''; position: absolute; top: -8px; left: -5px; width: 55px; height: 10px; background: #5d4037; border-radius: 5px 5px 0 0; }
         .cabin-window {
             position: absolute; top: 10px; left: 5px; width: 32px; height: 18px;
             background: var(--train-window); border-radius: 4px; border: 2px solid #fff;
         }
-        /* ปล่องควัน */
         .chimney {
             position: absolute; top: -18px; right: 15px; width: 20px; height: 25px;
-            background: var(--train-red-dark); border-radius: 4px;
-            border-top: 4px solid var(--train-gold);
+            background: var(--train-red-dark); border-radius: 4px; border-top: 4px solid var(--train-gold);
         }
-        /* ปากปล่องบานๆ */
-        .chimney::before {
-             content: ''; position: absolute; top: -8px; left: -5px; width: 30px; height: 10px;
-             background: var(--train-red-dark); border-radius: 50%;
-        }
-        /* กันชนหน้า (Cowcatcher) */
+        .chimney::before { content: ''; position: absolute; top: -8px; left: -5px; width: 30px; height: 10px; background: var(--train-red-dark); border-radius: 50%; }
         .cowcatcher {
-            position: absolute; bottom: 0; right: -10px;
-            width: 0; height: 0;
-            border-left: 15px solid var(--train-metal);
-            border-top: 15px solid transparent;
-            border-bottom: 5px solid transparent;
+            position: absolute; bottom: 0; right: -10px; width: 0; height: 0;
+            border-left: 15px solid var(--train-metal); border-top: 15px solid transparent; border-bottom: 5px solid transparent;
         }
 
-        /* โบกี้โดยสาร */
         .carriage {
             position: relative; width: 70px; height: 50px;
-            background: var(--train-blue);
-            border-radius: 12px; /* โค้งมน */
-            margin-right: 8px; /* ระยะห่างระหว่างโบกี้ */
-            animation: bounce 0.35s infinite alternate ease-in-out;
-            border-top: 3px solid #fff; /* ขอบหลังคา */
+            background: var(--train-blue); border-radius: 12px; margin-right: 8px;
+            animation: bounce 0.35s infinite alternate ease-in-out; border-top: 3px solid #fff;
         }
-        /* หลังคาโค้ง */
-        .carriage::before {
-             content: ''; position: absolute; top: -6px; left: 2px; width: 66px; height: 8px;
-             background: var(--train-blue); border-radius: 10px 10px 0 0; filter: brightness(1.1);
-        }
-        /* ตัวเชื่อมโบกี้ */
-        .carriage::after {
-             content: ''; position: absolute; bottom: 10px; right: -8px; width: 8px; height: 6px; background: #555; border-radius: 2px;
-        }
+        .carriage::before { content: ''; position: absolute; top: -6px; left: 2px; width: 66px; height: 8px; background: var(--train-blue); border-radius: 10px 10px 0 0; filter: brightness(1.1); }
+        .carriage::after { content: ''; position: absolute; bottom: 10px; right: -8px; width: 8px; height: 6px; background: #555; border-radius: 2px; }
         .carriage.yellow { background: var(--train-yellow); }
         .carriage.yellow::before { background: var(--train-yellow); filter: brightness(1.1); }
-        
-        /* หน้าต่างโบกี้ (มี 2 บาน) */
         .carriage-window {
             position: absolute; top: 12px; left: 8px; width: 22px; height: 18px;
             background: var(--train-window); border-radius: 4px; border: 2px solid #fff;
         }
         .carriage-window.w2 { left: 38px; }
 
-
-        /* --- ส่วนล้อและก้านสูบ (ความสมจริง) --- */
-        .wheels-container {
-            position: absolute; bottom: -10px; left: 5px;
-            width: auto; display: flex; gap: 4px;
-            z-index: 1;
-        }
+        .wheels-container { position: absolute; bottom: -10px; left: 5px; width: auto; display: flex; gap: 4px; z-index: 1; }
         .wheel {
             position: relative; width: 20px; height: 20px;
             background: radial-gradient(circle, #555 40%, #333 100%);
             border-radius: 50%; border: 2px solid var(--train-metal);
             animation: spin 1s linear infinite;
         }
-        /* ซี่ล้อ */
-        .wheel::after {
-            content: ''; position: absolute; top:0; left: 8px; width: 2px; height: 100%; background: var(--train-metal);
-        }
-        .wheel::before {
-            content: ''; position: absolute; top:8px; left: 0; width: 100%; height: 2px; background: var(--train-metal);
-        }
-
+        .wheel::after { content: ''; position: absolute; top:0; left: 8px; width: 2px; height: 100%; background: var(--train-metal); }
+        .wheel::before { content: ''; position: absolute; top:8px; left: 0; width: 100%; height: 2px; background: var(--train-metal); }
         .wheel-big { width: 26px; height: 26px; }
-        
-        /* ก้านสูบ (Connecting Rod) */
         .connecting-rod {
-            position: absolute;
-            bottom: 8px; left: 10px;
-            width: 50px; height: 4px;
-            background: var(--train-metal);
-            border-radius: 2px;
-            border: 1px solid #777;
-            animation: rod-move 1s linear infinite alternate; /* ขยับไปมา */
-            transform-origin: left center;
+            position: absolute; bottom: 8px; left: 10px; width: 50px; height: 4px;
+            background: var(--train-metal); border-radius: 2px; border: 1px solid #777;
+            animation: rod-move 1s linear infinite alternate; transform-origin: left center;
         }
 
-
-        /* --- ควัน (นุ่มฟูขึ้น) --- */
+        /* --- 💨 ควัน (ปรับปรุงใหม่ให้เห็นชัด) --- */
+        .smoke-container {
+            position: absolute; top: -45px; right: 8px; /* จุดกำเนิดควันเหนือปล่อง */
+            width: 10px; height: 10px;
+        }
         .smoke {
-            position: absolute; top: -30px; right: 15px;
-            width: 15px; height: 15px;
-            background: radial-gradient(circle, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0) 70%);
+            position: absolute; bottom: 0; left: 0;
+            width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
-            filter: blur(3px); /* ทำให้ฟุ้ง */
-            animation: puff-soft 2.5s infinite;
+            opacity: 0;
+            animation: smoke-rise 2s infinite ease-out;
         }
-        .smoke:nth-child(2) { animation-delay: 0.6s; width: 18px; height: 18px; right: 10px; }
-        .smoke:nth-child(3) { animation-delay: 1.2s; width: 12px; height: 12px; right: 20px; }
+        .smoke:nth-child(1) { animation-delay: 0s; transform: scale(0.5); }
+        .smoke:nth-child(2) { animation-delay: 0.6s; transform: scale(0.6); }
+        .smoke:nth-child(3) { animation-delay: 1.2s; transform: scale(0.7); }
+        .smoke:nth-child(4) { animation-delay: 1.8s; transform: scale(0.8); }
 
+        /* Animation ควันลอย */
+        @keyframes smoke-rise {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5) translateX(0);
+            }
+            20% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                /* ลอยขึ้น ลอยไปข้างหลัง(ซ้าย) และขยายใหญ่ */
+                transform: translateY(-60px) scale(2.5) translateX(-30px);
+            }
+        }
 
-        /* --- Animations --- */
-        @keyframes runTrain { 0% { transform: translateX(-500px); } 100% { transform: translateX(120vw); } }
+        /* Animation วิ่งพ้นจอ (แก้ไขใหม่!) */
+        @keyframes runTrain {
+            0% { transform: translateX(-400px); } /* เริ่มนอกจอซ้าย */
+            100% { transform: translateX(calc(100vw + 400px)); } /* วิ่งไปจนสุดขอบจอขวา + เผื่อความยาวรถไฟ */
+        }
+        
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-2px); } }
-        @keyframes rod-move {
-            0% { transform: translateX(0) rotate(0deg); }
-            100% { transform: translateX(10px) rotate(-5deg); }
-        }
-        @keyframes puff-soft {
-            0% { opacity: 0; transform: translateY(0) scale(0.5); }
-            40% { opacity: 0.7; }
-            100% { opacity: 0; transform: translateY(-50px) translateX(-20px) scale(2.5); }
-        }
+        @keyframes rod-move { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(10px) rotate(-5deg); } }
         /* ==================================================== */
 
-        h1 {
-            font-size: calc(1.5rem + 1vw);
-            margin-bottom: 1.5rem;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-weight: 700;
-            word-wrap: break-word;
-            min-height: 40px;
-        }
-
+        h1 { font-size: calc(1.5rem + 1vw); margin-bottom: 1.5rem; text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-weight: 700; word-wrap: break-word; min-height: 40px; }
         .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .time-box { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.25); padding: 8px 2px; border-radius: 12px; }
         .number { font-size: 2.5rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
         .label { font-size: 0.8rem; text-transform: uppercase; opacity: 0.85; margin-top: 5px; font-weight: 500; }
-
-        @media (max-width: 600px) {
-            .number { font-size: 1.5rem; }
-            .label { font-size: 0.6rem; }
-            .countdown-grid { gap: 5px; }
-        }
+        @media (max-width: 600px) { .number { font-size: 1.5rem; } .label { font-size: 0.6rem; } .countdown-grid { gap: 5px; } }
 
         /* ปุ่ม Settings */
-        .settings-btn {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            width: 35px; height: 35px;
-            border: 1px solid var(--glass-border);
-            color: #fff; font-size: 1.2rem; cursor: pointer;
-            z-index: 50;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .settings-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); border-radius: 50%; width: 35px; height: 35px; border: 1px solid var(--glass-border); color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 50; display: flex; align-items: center; justify-content: center; }
         .settings-btn:hover { background: rgba(255,255,255,0.4); }
-
         .settings-panel { display: none; margin-top: 20px; background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 15px; text-align: left; }
         .settings-panel.active { display: block; animation: fadeIn 0.3s ease-in; }
         .input-group { margin-bottom: 12px; }
@@ -274,7 +211,10 @@
     </ul>
 
     <div class="train-track-area">
-        <div class="track-ties"></div> <div class="track"></div> <div class="train-group">
+        <div class="track-ties"></div>
+        <div class="track"></div>
+        
+        <div class="train-group">
             <div class="carriage yellow">
                 <div class="carriage-window"></div>
                 <div class="carriage-window w2"></div>
@@ -298,11 +238,16 @@
                     <div class="cabin-window"></div>
                 </div>
                 <div class="chimney">
-                    <div class="smoke"></div>
-                    <div class="smoke"></div>
-                    <div class="smoke"></div>
+                    <div class="smoke-container">
+                        <div class="smoke"></div>
+                        <div class="smoke"></div>
+                        <div class="smoke"></div>
+                        <div class="smoke"></div>
+                    </div>
                 </div>
-                <div class="cowcatcher"></div> <div class="wheels-container" style="justify-content: flex-end; padding-right: 5px; bottom: -12px;">
+                <div class="cowcatcher"></div>
+                
+                <div class="wheels-container" style="justify-content: flex-end; padding-right: 5px; bottom: -12px;">
                     <div class="connecting-rod"></div>
                     <div class="wheel"></div>
                     <div class="wheel wheel-big" style="margin-left: 5px;"></div>
@@ -357,7 +302,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyCIjYBKVd15HVUS25lPKRrb507UY75_vCc",
           authDomain: "icountdown.firebaseapp.com",
@@ -368,14 +312,11 @@
           appId: "1:108107979488:web:38c7b432538cde9d568e85"
         };
 
-        // Initialize with Error Handling
         try {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
+            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             var db = firebase.database();
         } catch(e) {
-            alert("Connection Error: " + e.message + "\nกรุณาเช็ค Config Firebase");
+            alert("Connection Error: " + e.message);
             document.getElementById('headline').innerText = "Config Error!";
         }
 
@@ -383,7 +324,6 @@
         let timer;
         let endMessageStr = "Enjoy !!";
 
-        // ตรวจสอบการเชื่อมต่อ
         if(db) {
             db.ref('tripData').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -391,16 +331,14 @@
                     targetDate = data.timestamp;
                     endMessageStr = data.endMessage || endMessageStr;
                     document.getElementById('headline').innerText = data.title;
-                    
                     document.getElementById('titleInput').value = data.title;
                     document.getElementById('endMsgInput').value = endMessageStr;
-
                     startTimer();
                 } else {
                     document.getElementById('headline').innerText = "กด ⚙️ เพื่อตั้งค่า";
                 }
             }, (error) => {
-                alert("เข้าถึงฐานข้อมูลไม่ได้! \nกรุณาเช็ค Rules ใน Firebase");
+                alert("Database Locked! Check Rules.");
             });
         }
 
@@ -409,16 +347,12 @@
             timer = setInterval(function() {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
-
                 if (isNaN(distance)) return;
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                 updateDisplay(days, hours, minutes, seconds);
-
                 if (distance < 0) {
                     clearInterval(timer);
                     document.getElementById("headline").innerText = endMessageStr;
@@ -439,13 +373,8 @@
 
         function toggleSettings() {
             const panel = document.getElementById('settings');
-            if(panel.style.display === 'block') {
-                panel.style.display = 'none';
-                panel.classList.remove('active');
-            } else {
-                panel.style.display = 'block';
-                panel.classList.add('active');
-            }
+            if(panel.style.display === 'block') { panel.style.display = 'none'; panel.classList.remove('active'); }
+            else { panel.style.display = 'block'; panel.classList.add('active'); }
             document.getElementById('statusMsg').innerText = "";
             document.getElementById('adminPass').value = "";
         }
@@ -457,34 +386,14 @@
             const endMsg = document.getElementById('endMsgInput').value.trim();
             const status = document.getElementById('statusMsg');
 
-            if (pass !== "9@Nooey") {
-                status.innerText = "❌ รหัสผ่านผิดครับ";
-                status.style.color = "#ff6b6b";
-                return;
-            }
-
+            if (pass !== "9@Nooey") { status.innerText = "❌ รหัสผ่านผิดครับ"; status.style.color = "#ff6b6b"; return; }
             if (title && dateVal) {
-                status.innerText = "⏳ กำลังบันทึก...";
-                status.style.color = "#ffd700";
-                
+                status.innerText = "⏳ กำลังบันทึก..."; status.style.color = "#ffd700";
                 const timestamp = new Date(dateVal).getTime();
-                
-                db.ref('tripData').set({
-                    title: title,
-                    timestamp: timestamp,
-                    endMessage: endMsg || "หมดเวลาแล้ว!"
-                }).then(() => {
-                    status.innerText = "✅ บันทึกสำเร็จ!";
-                    status.style.color = "#51cf66";
-                    setTimeout(() => toggleSettings(), 1500);
-                }).catch((error) => {
-                    status.innerText = "❌ Error: " + error.message;
-                    alert("บันทึกไม่ได้: " + error.message);
-                });
-            } else {
-                status.innerText = "⚠️ กรอกข้อมูลให้ครบ";
-                status.style.color = "#ffeb3b";
-            }
+                db.ref('tripData').set({ title: title, timestamp: timestamp, endMessage: endMsg || "หมดเวลาแล้ว!" })
+                .then(() => { status.innerText = "✅ บันทึกสำเร็จ!"; status.style.color = "#51cf66"; setTimeout(() => toggleSettings(), 1500); })
+                .catch((error) => { status.innerText = "❌ Error: " + error.message; });
+            } else { status.innerText = "⚠️ กรอกข้อมูลให้ครบ"; status.style.color = "#ffeb3b"; }
         }
     </script>
 </body>
