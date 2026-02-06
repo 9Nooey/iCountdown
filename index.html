@@ -52,12 +52,16 @@
         @keyframes floatHead { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
 
         /* ====================================================
-           🚂 ส่วนรถไฟ (Train V3 - Fixed Run & Better Smoke)
+           🚂 ส่วนรถไฟแบบสมจริง V3 (Fix ควันหาย)
         ==================================================== */
         .train-track-area {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 90px;
+            position: fixed; 
+            bottom: 0; left: 0; width: 100%; 
+            /* ⚠️ แก้ไขจุดนี้: เพิ่มความสูงให้พื้นที่รถไฟ เพื่อให้ควันมีที่ลอย */
+            height: 250px; 
             z-index: 5; pointer-events: none; overflow: hidden;
         }
+        /* รางรถไฟ */
         .track {
             position: absolute; bottom: 5px; width: 100%; height: 8px;
             background: linear-gradient(to bottom, #a8a8a8, #757575);
@@ -69,17 +73,15 @@
             opacity: 0.8;
         }
 
+        /* กลุ่มรถไฟ */
         .train-group {
-            position: absolute; bottom: 18px; 
-            /* เริ่มต้นที่นอกจอทางซ้าย (ระยะห่างเท่ากับความยาวรถไฟ) */
-            left: -400px; 
+            position: absolute; bottom: 18px; left: -400px;
             display: flex; align-items: flex-end;
-            /* แก้ไข Animation การวิ่ง ให้วิ่งพ้นจอแน่นอน */
             animation: runTrain 15s linear infinite; 
             filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2));
         }
 
-        /* ส่วนประกอบรถไฟ */
+        /* หัวรถจักร */
         .locomotive {
             position: relative; width: 90px; height: 60px;
             background: var(--train-red);
@@ -106,6 +108,7 @@
             border-left: 15px solid var(--train-metal); border-top: 15px solid transparent; border-bottom: 5px solid transparent;
         }
 
+        /* โบกี้ */
         .carriage {
             position: relative; width: 70px; height: 50px;
             background: var(--train-blue); border-radius: 12px; margin-right: 8px;
@@ -121,6 +124,7 @@
         }
         .carriage-window.w2 { left: 38px; }
 
+        /* ล้อ */
         .wheels-container { position: absolute; bottom: -10px; left: 5px; width: auto; display: flex; gap: 4px; z-index: 1; }
         .wheel {
             position: relative; width: 20px; height: 20px;
@@ -137,44 +141,34 @@
             animation: rod-move 1s linear infinite alternate; transform-origin: left center;
         }
 
-        /* --- 💨 ควัน (ปรับปรุงใหม่ให้เห็นชัด) --- */
+        /* --- 💨 ควัน (ปรับใหม่ให้ลอยชัดๆ) --- */
         .smoke-container {
-            position: absolute; top: -45px; right: 8px; /* จุดกำเนิดควันเหนือปล่อง */
-            width: 10px; height: 10px;
+            position: absolute; top: -10px; /* จุดเริ่มควัน */
+            left: 0; width: 100%; height: 100%;
+            pointer-events: none;
         }
         .smoke {
-            position: absolute; bottom: 0; left: 0;
-            width: 20px; height: 20px;
-            background: rgba(255, 255, 255, 0.8);
+            position: absolute; top: 0; right: 5px;
+            width: 15px; height: 15px;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0) 70%);
             border-radius: 50%;
             opacity: 0;
-            animation: smoke-rise 2s infinite ease-out;
+            /* อนิเมชั่นให้ลอยเฉียงไปข้างหลังแรงๆ */
+            animation: smoke-float 1.5s infinite ease-out;
         }
         .smoke:nth-child(1) { animation-delay: 0s; transform: scale(0.5); }
-        .smoke:nth-child(2) { animation-delay: 0.6s; transform: scale(0.6); }
-        .smoke:nth-child(3) { animation-delay: 1.2s; transform: scale(0.7); }
-        .smoke:nth-child(4) { animation-delay: 1.8s; transform: scale(0.8); }
+        .smoke:nth-child(2) { animation-delay: 0.4s; transform: scale(0.7); }
+        .smoke:nth-child(3) { animation-delay: 0.8s; transform: scale(0.6); }
+        .smoke:nth-child(4) { animation-delay: 1.2s; transform: scale(0.8); }
 
-        /* Animation ควันลอย */
-        @keyframes smoke-rise {
-            0% {
-                opacity: 0;
-                transform: translateY(0) scale(0.5) translateX(0);
-            }
-            20% {
-                opacity: 0.9;
-            }
-            100% {
-                opacity: 0;
-                /* ลอยขึ้น ลอยไปข้างหลัง(ซ้าย) และขยายใหญ่ */
-                transform: translateY(-60px) scale(2.5) translateX(-30px);
-            }
+        @keyframes smoke-float {
+            0% { opacity: 0.8; transform: translateY(0) translateX(0) scale(0.5); }
+            100% { opacity: 0; transform: translateY(-80px) translateX(-60px) scale(2.5); } /* ลอยขึ้น -80px และถอยหลัง -60px */
         }
 
-        /* Animation วิ่งพ้นจอ (แก้ไขใหม่!) */
         @keyframes runTrain {
-            0% { transform: translateX(-400px); } /* เริ่มนอกจอซ้าย */
-            100% { transform: translateX(calc(100vw + 400px)); } /* วิ่งไปจนสุดขอบจอขวา + เผื่อความยาวรถไฟ */
+            0% { transform: translateX(-400px); } 
+            100% { transform: translateX(calc(100vw + 400px)); } 
         }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
