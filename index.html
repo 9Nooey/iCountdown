@@ -75,28 +75,59 @@
         .balloons { z-index: 2; }
         .balloon {
             position: absolute;
-            bottom: 0;
+            bottom: 50px; /* <--- เปลี่ยนจาก 0 เป็น 100px (ยิ่งเลขเยอะ ยิ่งลอยสูง) */
             width: 50px;
             height: 65px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            opacity: 0.8;
+            /* ...ค่าอื่นๆ เหมือนเดิม... */
         }
         .balloon::before {
             content: '';
             position: absolute;
-            bottom: -20px;
+            bottom: -20px; /* <--- ปรับเป็นลบเพื่อให้เชือกห้อยลงมาใต้ลูกโป่ง */
             left: 50%;
             width: 2px;
             height: 20px;
-            background: rgba(255, 255, 255, 0.5);
-            transform: translateX(-50%);
+            /* ...ค่าอื่นๆ เหมือนเดิม... */
         }
         .b1 { left: 15%; background-color: rgba(255, 99, 132, 0.6); animation: floatLow 6s ease-in-out infinite; transform: scale(1.2); }
         .b2 { left: 35%; background-color: rgba(54, 162, 235, 0.6); animation: floatLow 7s ease-in-out infinite; animation-delay: 1s; transform: scale(0.9); }
         .b3 { left: 55%; background-color: rgba(255, 206, 86, 0.6); animation: floatLow 8s ease-in-out infinite; animation-delay: 2s; transform: scale(1.1); }
         .b4 { left: 75%; background-color: rgba(75, 192, 192, 0.6); animation: floatLow 6.5s ease-in-out infinite; animation-delay: 0.5s; transform: scale(0.8); }
         .b5 { left: 85%; background-color: rgba(153, 102, 255, 0.6); animation: floatLow 7.5s ease-in-out infinite; animation-delay: 1.5s; }
+        /* สีส้ม */
+        .b6 { 
+            left: 10%; 
+            background-color: rgba(255, 159, 64, 0.7); 
+            animation: floatLow 6s ease-in-out infinite; 
+            animation-delay: 2.5s; 
+            transform: scale(0.9); 
+        }
+
+        /* สีม่วงเข้ม */
+        .b7 { 
+            left: 25%; 
+            background-color: rgba(153, 102, 255, 0.7); 
+            animation: floatLow 7.5s ease-in-out infinite; 
+            animation-delay: 0.5s; 
+            transform: scale(1.1); 
+        }
+
+        /* สีเขียวมิ้นท์ */
+        .b8 { 
+            left: 60%; 
+            background-color: rgba(75, 192, 192, 0.7); 
+            animation: floatLow 6.5s ease-in-out infinite; 
+            animation-delay: 3.5s; 
+            transform: scale(0.8); 
+        }
+
+        /* สีชมพูเข้ม */
+        .b9 { 
+            left: 90%; 
+            background-color: rgba(255, 99, 132, 0.7); 
+            animation: floatLow 8s ease-in-out infinite; 
+            animation-delay: 1.2s; 
+        }
 
         @keyframes floatLow {
             0%, 100% { transform: translateY(0) rotate(-2deg); }
@@ -231,6 +262,10 @@
         <div class="balloon b3"></div>
         <div class="balloon b4"></div>
         <div class="balloon b5"></div>
+        <div class="balloon b6"></div>
+        <div class="balloon b7"></div>
+        <div class="balloon b8"></div>
+        <div class="balloon b9"></div>
     </div>
 
     <div class="container">
