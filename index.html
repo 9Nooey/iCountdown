@@ -70,20 +70,19 @@
         }
 
         /* =========================================
-           แก้ไขตำแหน่งลูกโป่ง (ให้อยู่ขอบล่างสุด)
+           แก้ไขตำแหน่งลูกโป่ง (ให้อยู่บนหัวกรอบ)
         ========================================= */
         .balloons { 
-            z-index: 2;
-            position: absolute;
-            /* เปลี่ยนจาก 120px เป็น 0 เพื่อให้อยู่ติดขอบล่าง */
-            bottom: 0; 
+            /* ไม่ใช้ position absolute เทียบกับจอแล้ว แต่จะเทียบกับ container */
+            position: absolute; 
+            top: -110px; /* ดันขึ้นไปอยู่เหนือกล่อง */
+            left: 0;
             width: 100%; 
             display: flex;
             justify-content: center;
-            gap: 20px; 
-            padding: 0 10px;
-            /* เพิ่ม Padding ด้านล่างเล็กน้อยเพื่อให้ลูกโป่งลอยสูงขึ้นมานิดนึง */
-            padding-bottom: 20px; 
+            gap: 15px; 
+            z-index: 20; /* ให้อยู่เหนือทุกอย่าง */
+            pointer-events: none; /* เพื่อไม่ให้บังปุ่ม Setting */
         }
 
         .balloon {
@@ -91,7 +90,7 @@
             width: 50px;
             height: 65px;
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            opacity: 0.9;
+            opacity: 0.95;
             box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
         }
 
@@ -106,15 +105,15 @@
             transform: translateX(-50%);
         }
 
-        .b1 { background-color: rgba(255, 99, 132, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 0s; }
-        .b2 { background-color: rgba(54, 162, 235, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 1s; }
-        .b3 { background-color: rgba(255, 206, 86, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 2s; }
-        .b4 { background-color: rgba(75, 192, 192, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 3s; }
-        .b5 { background-color: rgba(153, 102, 255, 0.8); animation: floatWave 5s ease-in-out infinite; animation-delay: 4s; }
+        .b1 { background-color: rgba(255, 99, 132, 0.9); animation: floatWave 4s ease-in-out infinite; animation-delay: 0s; }
+        .b2 { background-color: rgba(54, 162, 235, 0.9); animation: floatWave 4.5s ease-in-out infinite; animation-delay: 1s; }
+        .b3 { background-color: rgba(255, 206, 86, 0.9); animation: floatWave 5s ease-in-out infinite; animation-delay: 2s; }
+        .b4 { background-color: rgba(75, 192, 192, 0.9); animation: floatWave 4.2s ease-in-out infinite; animation-delay: 0.5s; }
+        .b5 { background-color: rgba(153, 102, 255, 0.9); animation: floatWave 4.8s ease-in-out infinite; animation-delay: 1.5s; }
 
         @keyframes floatWave {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-30px) rotate(3deg); }
+            0%, 100% { transform: translateY(0) rotate(-4deg); }
+            50% { transform: translateY(-15px) rotate(4deg); }
         }
         /* ========================================= */
 
@@ -131,8 +130,9 @@
             border: 1px solid var(--glass-border);
             width: 95%; 
             max-width: 600px;
-            position: relative;
+            position: relative; /* สำคัญมาก เพื่อให้ลูกโป่งเกาะกับกล่องนี้ */
             animation: fadeInDown 0.8s ease-out;
+            margin-top: 50px; /* เพิ่มพื้นที่ด้านบนให้ลูกโป่งไม่ชนขอบจอ */
         }
 
         h1 {
@@ -194,7 +194,7 @@
             color: #fff;
             font-size: 1.2rem;
             cursor: pointer;
-            z-index: 20;
+            z-index: 30; /* ให้สูงกว่าลูกโป่ง */
             display: flex; align-items: center; justify-content: center;
         }
         
@@ -232,15 +232,15 @@
         <li></li><li></li><li></li><li></li>
     </ul>
 
-    <div class="bg-layer balloons">
-        <div class="balloon b1"></div>
-        <div class="balloon b2"></div>
-        <div class="balloon b3"></div>
-        <div class="balloon b4"></div>
-        <div class="balloon b5"></div>
-    </div>
-
     <div class="container">
+        <div class="balloons">
+            <div class="balloon b1"></div>
+            <div class="balloon b2"></div>
+            <div class="balloon b3"></div>
+            <div class="balloon b4"></div>
+            <div class="balloon b5"></div>
+        </div>
+
         <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
 
         <h1 id="headline">Loading...</h1>
@@ -296,106 +296,4 @@
             firebase.initializeApp(firebaseConfig);
             var db = firebase.database();
         } catch(e) {
-            document.getElementById('headline').innerText = "Firebase Config Error!";
-        }
-
-        let targetDate;
-        let timer;
-        let endMessageStr = "Enjoy !!";
-
-        if(db) {
-            db.ref('tripData').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    targetDate = data.timestamp;
-                    endMessageStr = data.endMessage || endMessageStr;
-                    document.getElementById('headline').innerText = data.title;
-                    
-                    document.getElementById('titleInput').value = data.title;
-                    document.getElementById('endMsgInput').value = endMessageStr;
-
-                    startTimer();
-                } else {
-                    document.getElementById('headline').innerText = "กด ⚙️ เพื่อตั้งค่า";
-                }
-            });
-        }
-
-        function startTimer() {
-            if (timer) clearInterval(timer);
-            
-            timer = setInterval(function() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (isNaN(distance)) return;
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                updateDisplay(days, hours, minutes, seconds);
-
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById("headline").innerText = endMessageStr;
-                    updateDisplay(0, 0, 0, 0);
-                    document.getElementById("countdown").style.opacity = "0.5";
-                } else {
-                    document.getElementById("countdown").style.opacity = "1";
-                }
-            }, 1000);
-        }
-
-        function updateDisplay(d, h, m, s) {
-            document.getElementById("days").innerText = d < 10 ? '0' + d : d;
-            document.getElementById("hours").innerText = h < 10 ? '0' + h : h;
-            document.getElementById("minutes").innerText = m < 10 ? '0' + m : m;
-            document.getElementById("seconds").innerText = s < 10 ? '0' + s : s;
-        }
-
-        function toggleSettings() {
-            document.getElementById('settings').classList.toggle('active');
-            document.getElementById('statusMsg').innerText = "";
-            document.getElementById('adminPass').value = "";
-        }
-
-        function saveToCloud() {
-            const pass = document.getElementById('adminPass').value;
-            const title = document.getElementById('titleInput').value.trim();
-            const dateVal = document.getElementById('datePicker').value;
-            const endMsg = document.getElementById('endMsgInput').value.trim();
-            const status = document.getElementById('statusMsg');
-
-            if (pass !== "9@Nooey") {
-                status.innerText = "❌ รหัสผ่านผิดครับ";
-                status.style.color = "#ff6b6b";
-                return;
-            }
-
-            if (title && dateVal) {
-                status.innerText = "⏳ กำลังบันทึก...";
-                status.style.color = "#ffd700";
-                
-                const timestamp = new Date(dateVal).getTime();
-                
-                db.ref('tripData').set({
-                    title: title,
-                    timestamp: timestamp,
-                    endMessage: endMsg || "หมดเวลาแล้ว!"
-                }).then(() => {
-                    status.innerText = "✅ บันทึกสำเร็จ!";
-                    status.style.color = "#51cf66";
-                    setTimeout(() => toggleSettings(), 1500);
-                }).catch((error) => {
-                    status.innerText = "❌ Error: " + error.message;
-                });
-            } else {
-                status.innerText = "⚠️ กรอกข้อมูลให้ครบ";
-                status.style.color = "#ffeb3b";
-            }
-        }
-    </script>
-</body>
-</html>
+            document.getElementById('headline').
