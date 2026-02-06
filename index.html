@@ -33,7 +33,7 @@
             position: relative;
         }
 
-        /* --- Background Effects (Layers 1 & 2) --- */
+        /* --- Background Effects --- */
         .bg-layer {
             position: absolute;
             top: 0;
@@ -44,7 +44,7 @@
             pointer-events: none;
         }
         
-        /* Layer 1: Moving Squares (Original) - ยังคงเคลื่อนไหวเหมือนเดิม */
+        /* Layer 1: Moving Squares */
         .circles { z-index: 1; }
         .circles li {
             position: absolute;
@@ -71,16 +71,15 @@
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
         }
 
-        /* Layer 2: Floating Balloons (Modified) - แก้ไขให้ลอยอยู่แค่ด้านล่าง */
+        /* Layer 2: Floating Balloons (Low Level) */
         .balloons { z-index: 2; }
         .balloon {
             position: absolute;
-            bottom: 0; /* เริ่มต้นที่ขอบล่าง */
+            bottom: 0;
             width: 50px;
             height: 65px;
             background-color: rgba(255, 255, 255, 0.7);
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            /* animation: floatBalloon linear infinite;  <- ลบอันเดิมออก */
             opacity: 0.8;
         }
         .balloon::before {
@@ -93,32 +92,30 @@
             background: rgba(255, 255, 255, 0.5);
             transform: translateX(-50%);
         }
-        /* สีและตำแหน่งของลูกโป่ง พร้อม Animation ใหม่ที่ขยับแค่ด้านล่าง */
         .b1 { left: 15%; background-color: rgba(255, 99, 132, 0.6); animation: floatLow 6s ease-in-out infinite; transform: scale(1.2); }
         .b2 { left: 35%; background-color: rgba(54, 162, 235, 0.6); animation: floatLow 7s ease-in-out infinite; animation-delay: 1s; transform: scale(0.9); }
         .b3 { left: 55%; background-color: rgba(255, 206, 86, 0.6); animation: floatLow 8s ease-in-out infinite; animation-delay: 2s; transform: scale(1.1); }
         .b4 { left: 75%; background-color: rgba(75, 192, 192, 0.6); animation: floatLow 6.5s ease-in-out infinite; animation-delay: 0.5s; transform: scale(0.8); }
         .b5 { left: 85%; background-color: rgba(153, 102, 255, 0.6); animation: floatLow 7.5s ease-in-out infinite; animation-delay: 1.5s; }
 
-        /* Animation ใหม่สำหรับลูกโป่ง ขยับขึ้นลงแค่บริเวณด้านล่าง */
         @keyframes floatLow {
             0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-30px) rotate(2deg); } /* ขยับขึ้นไปสูงสุดแค่ 30px */
+            50% { transform: translateY(-30px) rotate(2deg); }
         }
 
-        /* --- Main Content (Layer 3) --- */
+        /* --- Main Content --- */
         .container {
             z-index: 10;
             text-align: center;
             background: var(--glass-bg);
-            padding: 2.5rem 2rem;
+            padding: 2rem 1.5rem;
             border-radius: 25px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            width: 92%;
-            max-width: 550px;
+            width: 95%; /* กว้างเกือบเต็มจอ */
+            max-width: 600px;
             position: relative;
             animation: fadeInDown 0.8s ease-out;
         }
@@ -132,10 +129,11 @@
             word-wrap: break-word;
         }
 
+        /* --- Grid Layout (แก้ไขใหม่ให้เรียงแถวเดียวตลอด) --- */
         .countdown-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr); /* บังคับ 4 คอลัมน์เสมอ */
+            gap: 8px; /* ลดช่องว่างลงเพื่อให้พอดีมือถือ */
         }
 
         .time-box {
@@ -144,13 +142,13 @@
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.25);
-            padding: 12px 5px;
-            border-radius: 15px;
-            aspect-ratio: 1 / 1;
+            padding: 8px 2px;
+            border-radius: 12px;
+            /* เอา aspect-ratio ออก เพื่อให้ยืดหดตามเนื้อหาได้ดีขึ้นในจอเล็ก */
         }
 
         .number {
-            font-size: calc(1.8rem + 1.5vw);
+            font-size: 2.5rem; /* ขนาดปกติ PC */
             font-weight: 700;
             line-height: 1.1;
             font-variant-numeric: tabular-nums;
@@ -160,59 +158,60 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             opacity: 0.85;
-            margin-top: 8px;
+            margin-top: 5px;
             font-weight: 500;
+        }
+
+        /* --- Mobile Responsive (ปรับแต่งเฉพาะขนาดตัวอักษร) --- */
+        @media (max-width: 600px) {
+            .number {
+                font-size: 1.5rem; /* ลดขนาดตัวเลขในมือถือ */
+            }
+            .label {
+                font-size: 0.6rem; /* ลดขนาดตัวหนังสือในมือถือ */
+            }
+            .countdown-grid {
+                gap: 5px; /* ช่องว่างระหว่างกล่องเล็กลงอีกนิดในมือถือ */
+            }
         }
 
         /* --- Settings Panel --- */
         .settings-btn {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 10px;
+            right: 10px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            width: 40px; height: 40px;
+            width: 35px; height: 35px;
             border: 1px solid var(--glass-border);
             color: #fff;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             cursor: pointer;
             z-index: 20;
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s ease;
         }
-        .settings-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.3); }
         
         .settings-panel {
             display: none;
             margin-top: 20px;
             background: rgba(0, 0, 0, 0.4);
-            padding: 20px;
+            padding: 15px;
             border-radius: 15px;
             text-align: left;
         }
         .settings-panel.active { display: block; animation: fadeIn 0.3s ease-in; }
         
-        .input-group { margin-bottom: 15px; }
-        .input-label { display: block; margin-bottom: 6px; font-size: 0.85rem; opacity: 0.9; }
+        .input-group { margin-bottom: 12px; }
+        .input-label { display: block; margin-bottom: 5px; font-size: 0.8rem; opacity: 0.9; }
         .input-field {
-            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            width: 100%; padding: 10px; border-radius: 8px; border: none;
             font-family: 'Prompt', sans-serif; background: rgba(255, 255, 255, 0.95);
-            color: #333; font-size: 1rem;
+            color: #333; font-size: 0.9rem;
         }
         .save-btn {
-            background: #fff; color: #667eea; border: none; padding: 12px;
-            border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%;
-            font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        .save-btn:active { transform: scale(0.97); }
-
-        /* --- Mobile Responsive --- */
-        @media (max-width: 600px) {
-            .container { padding: 2rem 1.5rem; width: 95%; }
-            .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .time-box { padding: 10px; border-radius: 12px; }
-            .label { font-size: 0.75rem; }
+            background: #fff; color: #667eea; border: none; padding: 10px;
+            border-radius: 20px; font-weight: bold; cursor: pointer; width: 100%;
+            font-size: 1rem;
         }
 
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
@@ -241,12 +240,13 @@
         
         <div id="settings" class="settings-panel">
             <div class="input-group">
-                <label class="input-label">🔒 Password </label> <input type="password" id="adminPass" class="input-field" placeholder="Password" inputmode="text">
+                <label class="input-label">🔒 Password</label>
+                <input type="password" id="adminPass" class="input-field" placeholder="Password">
             </div>
             
             <div class="input-group">
-                <label class="input-label">📝 ชื่อทริป/หัวข้อ</label>
-                <input type="text" id="titleInput" class="input-field" placeholder="เช่น ไปเที่ยวทะเลกัน!">
+                <label class="input-label">📝 ชื่อทริป</label>
+                <input type="text" id="titleInput" class="input-field">
             </div>
             
             <div class="input-group">
@@ -255,8 +255,8 @@
             </div>
 
             <div class="input-group">
-                 <label class="input-label">🎉 ข้อความเมื่อนับเสร็จ (แก้ไขได้)</label>
-                <input type="text" id="endMsgInput" class="input-field" placeholder="เช่น เย้! เดินทางปลอดภัย">
+                 <label class="input-label">🎉 ข้อความจบ</label>
+                <input type="text" id="endMsgInput" class="input-field">
             </div>
             
             <button class="save-btn" onclick="saveToCloud()">บันทึกข้อมูลออนไลน์ ☁️</button>
@@ -265,7 +265,7 @@
 
         <div class="countdown-grid" id="countdown">
             <div class="time-box"><span class="number" id="days">00</span><span class="label">วัน</span></div>
-            <div class="time-box"><span class="number" id="hours">00</span><span class="label">ชั่วโมง</span></div>
+            <div class="time-box"><span class="number" id="hours">00</span><span class="label">ชม.</span></div>
             <div class="time-box"><span class="number" id="minutes">00</span><span class="label">นาที</span></div>
             <div class="time-box"><span class="number" id="seconds">00</span><span class="label">วินาที</span></div>
         </div>
@@ -275,9 +275,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // ========================================================
-        // ⚠️ Config ใหม่ที่อัปเดตแล้ว
-        // ========================================================
         const firebaseConfig = {
           apiKey: "AIzaSyCIjYBKVd15HVUS25lPKRrb507UY75_vCc",
           authDomain: "icountdown.firebaseapp.com",
@@ -287,19 +284,17 @@
           messagingSenderId: "108107979488",
           appId: "1:108107979488:web:38c7b432538cde9d568e85"
         };
-        // ========================================================
 
         try {
             firebase.initializeApp(firebaseConfig);
             var db = firebase.database();
         } catch(e) {
             document.getElementById('headline').innerText = "Firebase Config Error!";
-            console.error("Firebase Error:", e);
         }
 
         let targetDate;
         let timer;
-        let endMessageStr = "Enjoy!";
+        let endMessageStr = "Enjoy !!";
 
         if(db) {
             db.ref('tripData').on('value', (snapshot) => {
@@ -314,10 +309,8 @@
 
                     startTimer();
                 } else {
-                    document.getElementById('headline').innerText = "กรุณาตั้งค่าวันเวลา (⚙️)";
+                    document.getElementById('headline').innerText = "กด ⚙️ เพื่อตั้งค่า";
                 }
-            }, (error) => {
-                 document.getElementById('headline').innerText = "Error loading data";
             });
         }
 
@@ -356,8 +349,7 @@
         }
 
         function toggleSettings() {
-            const panel = document.getElementById('settings');
-            panel.classList.toggle('active');
+            document.getElementById('settings').classList.toggle('active');
             document.getElementById('statusMsg').innerText = "";
             document.getElementById('adminPass').value = "";
         }
@@ -369,7 +361,6 @@
             const endMsg = document.getElementById('endMsgInput').value.trim();
             const status = document.getElementById('statusMsg');
 
-            // 🔒 แก้ไขรหัสผ่านเป็น 9@Nooey ตรงนี้
             if (pass !== "9@Nooey") {
                 status.innerText = "❌ รหัสผ่านผิดครับ";
                 status.style.color = "#ff6b6b";
@@ -387,14 +378,14 @@
                     timestamp: timestamp,
                     endMessage: endMsg || "หมดเวลาแล้ว!"
                 }).then(() => {
-                    status.innerText = "✅ บันทึกสำเร็จ! ทุกคนเห็นข้อมูลใหม่แล้ว";
+                    status.innerText = "✅ บันทึกสำเร็จ!";
                     status.style.color = "#51cf66";
-                    setTimeout(() => toggleSettings(), 2000);
+                    setTimeout(() => toggleSettings(), 1500);
                 }).catch((error) => {
-                    status.innerText = "❌ เกิดข้อผิดพลาด: " + error.message;
+                    status.innerText = "❌ Error: " + error.message;
                 });
             } else {
-                status.innerText = "⚠️ กรุณากรอกชื่อทริปและเลือกวันเวลา";
+                status.innerText = "⚠️ กรอกข้อมูลให้ครบ";
                 status.style.color = "#ffeb3b";
             }
         }
