@@ -41,28 +41,23 @@
             width: 95%; max-width: 600px;
             position: relative;
             animation: fadeInDown 0.8s ease-out;
-            /* เพิ่มระยะห่างด้านบนอีกนิด เผื่อลูกโป่งลอยสูง */
             margin-top: 60px; 
         }
 
-        /* ====================================================
-           🎈 ส่วนลูกโป่ง (แก้ไขตำแหน่งใหม่)
-        ==================================================== */
+        /* 🎈 ลูกโป่ง (ตำแหน่งเดิม: เหนือกล่อง) */
         .balloons-container {
             position: absolute;
-            /* ดันขึ้นไปสูงๆ เพื่อให้ปลายเชือกอยู่เหนือกล่องพอดี */
             top: -145px; 
             left: 0;
             width: 100%;
             height: 100px;
             display: flex;
             justify-content: center;
-            align-items: flex-end; /* ให้ลูกโป่งอยู่ก้น container นี้ */
+            align-items: flex-end;
             gap: 15px;
             pointer-events: none;
             z-index: 20;
         }
-
         .balloon {
             position: relative;
             width: 45px;
@@ -71,35 +66,51 @@
             opacity: 0.95;
             box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
         }
-
-        /* เชือก */
         .balloon::before {
             content: '';
-            position: absolute;
-            bottom: -40px; /* เชือกยาว 40px ห้อยลงมา */
-            left: 50%;
-            width: 2px;
-            height: 40px;
+            position: absolute; bottom: -40px; left: 50%;
+            width: 2px; height: 40px;
             background: rgba(255, 255, 255, 0.5);
             transform: translateX(-50%);
         }
-        /* สรุปการคำนวณตำแหน่ง:
-           - balloons-container ก้นอยู่ที่ -45px (เทียบกับขอบบนกล่องหลัก)
-           - ลูกโป่งอยู่ก้น container นั้น
-           - เชือกห้อยลงมาอีก 40px
-           - ดังนั้น ปลายเชือกจะอยู่ที่ -45px + 40px = -5px (อยู่เหนือกล่อง 5px)
-        */
-
-        /* สีและ Animation */
         .b1 { background-color: rgba(255, 99, 132, 0.9); animation: floatHead 4s ease-in-out infinite; }
         .b2 { background-color: rgba(54, 162, 235, 0.9); animation: floatHead 4.5s ease-in-out infinite; animation-delay: 1s; }
         .b3 { background-color: rgba(255, 206, 86, 0.9); animation: floatHead 5s ease-in-out infinite; animation-delay: 2s; }
         .b4 { background-color: rgba(75, 192, 192, 0.9); animation: floatHead 4.2s ease-in-out infinite; animation-delay: 0.5s; }
         .b5 { background-color: rgba(153, 102, 255, 0.9); animation: floatHead 4.8s ease-in-out infinite; animation-delay: 1.5s; }
-
         @keyframes floatHead {
             0%, 100% { transform: translateY(0) rotate(-3deg); }
             50% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        /* ====================================================
+           🚂 ส่วนรถไฟ (Train) - วิ่งด้านล่างจอ
+        ==================================================== */
+        .train-track-area {
+            position: fixed; /* เกาะติดหน้าจอ */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px; /* พื้นที่ความสูงของราง */
+            z-index: 5; /* อยู่ด้านหลัง Container แต่หน้า Background */
+            pointer-events: none;
+            border-bottom: 2px solid rgba(255,255,255,0.4); /* เส้นราง */
+            overflow: hidden; /* ซ่อนส่วนที่วิ่งเลยจอ */
+        }
+
+        .train {
+            position: absolute;
+            bottom: 2px; /* วางบนราง */
+            font-size: 3rem; /* ขนาดรถไฟ */
+            white-space: nowrap;
+            /* Animation วิ่งจากซ้ายไปขวา */
+            animation: runTrain 12s linear infinite; 
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+        }
+
+        @keyframes runTrain {
+            0% { transform: translateX(-150%); } /* เริ่มต้น: อยู่นอกจอทางซ้าย */
+            100% { transform: translateX(120vw); } /* สิ้นสุด: วิ่งเลยจอทางขวาไป */
         }
         /* ==================================================== */
 
@@ -154,6 +165,10 @@
         <li></li><li></li><li></li><li></li>
         <li></li><li></li><li></li><li></li>
     </ul>
+
+    <div class="train-track-area">
+        <div class="train">🚂🚃🚃💨</div>
+    </div>
 
     <div class="container">
         <div class="balloons-container">
@@ -229,14 +244,6 @@
 
         // ตรวจสอบการเชื่อมต่อ
         if(db) {
-            const connectedRef = db.ref(".info/connected");
-            connectedRef.on("value", (snap) => {
-                if (snap.val() === true) {
-                    // connected
-                }
-            });
-
-            // ดึงข้อมูล
             db.ref('tripData').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
@@ -252,8 +259,7 @@
                     document.getElementById('headline').innerText = "กด ⚙️ เพื่อตั้งค่า";
                 }
             }, (error) => {
-                alert("เข้าถึงฐานข้อมูลไม่ได้! \nกรุณาไปที่ Firebase Console -> Realtime Database -> Rules \nแล้วเปลี่ยน .read และ .write เป็น true");
-                document.getElementById('headline').innerText = "Database Locked 🔒";
+                alert("เข้าถึงฐานข้อมูลไม่ได้! \nกรุณาเช็ค Rules ใน Firebase");
             });
         }
 
@@ -332,7 +338,7 @@
                     setTimeout(() => toggleSettings(), 1500);
                 }).catch((error) => {
                     status.innerText = "❌ Error: " + error.message;
-                    alert("บันทึกไม่ได้: " + error.message + "\n(อย่าลืมเช็ค Rules ใน Firebase)");
+                    alert("บันทึกไม่ได้: " + error.message);
                 });
             } else {
                 status.innerText = "⚠️ กรอกข้อมูลให้ครบ";
