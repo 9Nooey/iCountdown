@@ -44,7 +44,7 @@
             margin-top: 60px; 
         }
 
-        /* 🎈 ลูกโป่ง (ตำแหน่งเดิม: เหนือกล่อง) */
+        /* 🎈 ส่วนลูกโป่ง */
         .balloons-container {
             position: absolute;
             top: -145px; 
@@ -84,33 +84,115 @@
         }
 
         /* ====================================================
-           🚂 ส่วนรถไฟ (Train) - วิ่งด้านล่างจอ
+           🚂 ส่วนรถไฟแบบสมจริง (CSS Train)
         ==================================================== */
         .train-track-area {
-            position: fixed; /* เกาะติดหน้าจอ */
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px; /* พื้นที่ความสูงของราง */
-            z-index: 5; /* อยู่ด้านหลัง Container แต่หน้า Background */
-            pointer-events: none;
-            border-bottom: 2px solid rgba(255,255,255,0.4); /* เส้นราง */
-            overflow: hidden; /* ซ่อนส่วนที่วิ่งเลยจอ */
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 80px;
+            z-index: 5; pointer-events: none;
+            border-bottom: 4px solid rgba(255,255,255,0.3); /* ราง */
+            overflow: hidden;
+        }
+        
+        /* ไม้หมอนรางรถไฟ */
+        .track-ties {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 10px;
+            background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.3) 50%);
+            background-size: 40px 100%;
         }
 
-        .train {
+        /* ตัวคอนเทนเนอร์รถไฟที่วิ่ง */
+        .train-group {
             position: absolute;
-            bottom: 2px; /* วางบนราง */
-            font-size: 3rem; /* ขนาดรถไฟ */
-            white-space: nowrap;
-            /* Animation วิ่งจากซ้ายไปขวา */
-            animation: runTrain 12s linear infinite; 
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            bottom: 8px; /* ลอยเหนือรางนิดนึง */
+            left: -300px;
+            display: flex;
+            align-items: flex-end;
+            animation: runTrain 15s linear infinite;
         }
+
+        /* หัวรถจักร */
+        .locomotive {
+            position: relative;
+            width: 80px; height: 55px;
+            background: #ff6b6b; /* สีหัวรถ */
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+            animation: bounce 0.3s infinite alternate;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
+        }
+        .cabin {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 40px; height: 35px;
+            background: #c0392b;
+            border-radius: 5px 5px 0 0;
+        }
+        .cabin-window {
+            position: absolute; top: 5px; left: 5px; width: 25px; height: 15px;
+            background: #87ceeb; border-radius: 3px;
+        }
+        .chimney {
+            position: absolute; top: -15px; right: 15px;
+            width: 15px; height: 20px;
+            background: #333;
+        }
+        .chimney-top {
+            position: absolute; top: -5px; left: -2px;
+            width: 19px; height: 5px; background: #333;
+        }
+
+        /* โบกี้ */
+        .carriage {
+            position: relative;
+            width: 60px; height: 45px;
+            background: #4ecdc4; /* สีโบกี้ */
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            animation: bounce 0.3s infinite alternate;
+            animation-delay: 0.1s;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+        .carriage-window {
+            position: absolute; top: 8px; left: 10px; width: 40px; height: 15px;
+            background: #87ceeb; border-radius: 2px;
+        }
+
+        /* ล้อรถไฟ */
+        .wheels-container {
+            position: absolute; bottom: -8px; left: 5px;
+            width: 100%; display: flex; gap: 5px;
+        }
+        .wheel {
+            width: 18px; height: 18px;
+            background: #333;
+            border-radius: 50%;
+            border: 2px dashed #999; /* ทำให้เห็นการหมุน */
+            animation: spin 1s linear infinite;
+        }
+        .wheel-big { width: 22px; height: 22px; }
+
+        /* ควัน */
+        .smoke {
+            position: absolute; top: -25px; right: 10px;
+            width: 10px; height: 10px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            animation: puff 2s infinite;
+        }
+        .smoke:nth-child(2) { animation-delay: 0.5s; }
+        .smoke:nth-child(3) { animation-delay: 1s; }
 
         @keyframes runTrain {
-            0% { transform: translateX(-150%); } /* เริ่มต้น: อยู่นอกจอทางซ้าย */
-            100% { transform: translateX(120vw); } /* สิ้นสุด: วิ่งเลยจอทางขวาไป */
+            0% { transform: translateX(-300px); }
+            100% { transform: translateX(120vw); }
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-1px); } }
+        @keyframes puff {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            50% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(-40px) scale(2); }
         }
         /* ==================================================== */
 
@@ -167,7 +249,39 @@
     </ul>
 
     <div class="train-track-area">
-        <div class="train">🚂🚃🚃💨</div>
+        <div class="track-ties"></div> <div class="train-group">
+            <div class="carriage">
+                <div class="carriage-window"></div>
+                <div class="wheels-container">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            
+            <div class="carriage" style="background: #ffeaa7;">
+                <div class="carriage-window"></div>
+                <div class="wheels-container">
+                    <div class="wheel"></div>
+                    <div class="wheel"></div>
+                </div>
+            </div>
+
+            <div class="locomotive">
+                <div class="cabin">
+                    <div class="cabin-window"></div>
+                </div>
+                <div class="chimney">
+                    <div class="chimney-top"></div>
+                    <div class="smoke"></div>
+                    <div class="smoke"></div>
+                    <div class="smoke"></div>
+                </div>
+                <div class="wheels-container" style="justify-content: flex-end; padding-right: 5px;">
+                    <div class="wheel"></div>
+                    <div class="wheel wheel-big"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
